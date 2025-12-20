@@ -1,195 +1,406 @@
-# The Bookshop
+# The GO Programming Language Exercises Solutions
 
-Browse our curated collection of thought-provoking books.
+## Chapter 1
 
----
+### Exercise 1.1 Modif y the echo program to also print os.Args[0], the name of the command that invoked it.
 
-<div class="book-grid">
+```go
+package main
 
-<div class="book-card">
-  <a href="/reading/books/read/21-lessons-for-the-21st-century-by-yuval-noah-harari/">
-    <img src="https://books.google.com/books/content?id=lIyTEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" alt="21 Lessons for the 21st Century">
-    <h3>21 Lessons for the 21st Century</h3>
-    <p class="author">Yuval Noah Harari</p>
-    <span class="tag">History</span>
-  </a>
-</div>
+import (
+	"fmt"
+	"os"
+)
 
-<div class="book-card">
-  <a href="/reading/books/read/1984-by-george-orwell/">
-    <img src="https://covers.openlibrary.org/b/id/7222246-L.jpg" alt="1984">
-    <h3>1984</h3>
-    <p class="author">George Orwell</p>
-    <span class="tag">Fiction</span>
-  </a>
-</div>
+func main() {
+	for i, arg := range os.Args {
+		if i > 0 {
+			fmt.Print(" ")
+		}
+		fmt.Print(arg)
+	}
+	fmt.Println()
+}
+```
 
-<div class="book-card">
-  <a href="/reading/books/read/sapiens-by-yuval-noah-harari/">
-    <img src="https://covers.openlibrary.org/b/id/8245447-L.jpg" alt="Sapiens">
-    <h3>Sapiens</h3>
-    <p class="author">Yuval Noah Harari</p>
-    <span class="tag">History</span>
-  </a>
-</div>
+### Exercise 1.2 Modify the echo program to print the index and value of each of its arguments, one per line.
 
-<div class="book-card">
-  <a href="/reading/books/read/the-hero-with-a-thousand-faces-by-joseph-campbell/">
-    <img src="https://covers.openlibrary.org/b/id/8503543-L.jpg" alt="The Hero With a Thousand Faces">
-    <h3>The Hero With a Thousand Faces</h3>
-    <p class="author">Joseph Campbell</p>
-    <span class="tag">Mythology</span>
-  </a>
-</div>
+```go
+package main
 
-<div class="book-card">
-  <a href="/reading/books/read/cosmos-by-carl-sagan/">
-    <img src="https://covers.openlibrary.org/b/id/8231887-L.jpg" alt="Cosmos">
-    <h3>Cosmos</h3>
-    <p class="author">Carl Sagan</p>
-    <span class="tag">Science</span>
-  </a>
-</div>
+import (
+	"fmt"
+	"os"
+)
 
-<div class="book-card">
-  <a href="/reading/books/read/meditations-the-annotated-edition-by-marcus-aurelius/">
-    <img src="https://covers.openlibrary.org/b/id/8307408-L.jpg" alt="Meditations">
-    <h3>Meditations</h3>
-    <p class="author">Marcus Aurelius</p>
-    <span class="tag">Philosophy</span>
-  </a>
-</div>
+func main() {
+	for i, arg := range os.Args {
+		fmt.Println(i, arg)
+	}
+}
+```
 
-<div class="book-card">
-  <a href="/reading/books/read/man-s-search-for-meaning-by-viktor-e-frankl/">
-    <img src="https://covers.openlibrary.org/b/id/8482050-L.jpg" alt="Man's Search for Meaning">
-    <h3>Man's Search for Meaning</h3>
-    <p class="author">Viktor E. Frankl</p>
-    <span class="tag">Psychology</span>
-  </a>
-</div>
+### Exercise 1.3 Exercise 1.3: Experiment to measure the difference in running time between our potentially inefficient versions and the one that uses strings.Join. (Section 1.6 illustrates part of the time package, and Section 11.4 shows how to write benchmark tests for systematic per- formance evaluation.)
 
-<div class="book-card">
-  <a href="/reading/books/read/the-god-delusion-by-richard-dawkins/">
-    <img src="https://covers.openlibrary.org/b/id/8235826-L.jpg" alt="The God Delusion">
-    <h3>The God Delusion</h3>
-    <p class="author">Richard Dawkins</p>
-    <span class="tag">Philosophy</span>
-  </a>
-</div>
+```go
+package echo
 
-<div class="book-card">
-  <a href="/reading/books/read/sapiens-by-yuval-noah-harari/">
-    <img src="https://covers.openlibrary.org/b/id/8245447-L.jpg" alt="Sapiens">
-    <h3>The Denial of Death</h3>
-    <p class="author">Ernest Becker</p>
-    <span class="tag">Philosophy</span>
-  </a>
-</div>
+import (
+	"os"
+	"strings"
+	"testing"
+)
 
-<div class="book-card">
-  <a href="/reading/books/read/between-the-world-and-me-by-ta-nehisi-coates/">
-    <img src="https://covers.openlibrary.org/b/id/8235960-L.jpg" alt="Between the World and Me">
-    <h3>Between the World and Me</h3>
-    <p class="author">Ta-Nehisi Coates</p>
-    <span class="tag">Memoir</span>
-  </a>
-</div>
-
-<div class="book-card">
-  <a href="/reading/books/read/the-lord-of-the-rings-by-john-ronald-reuel-tolkien/">
-    <img src="https://covers.openlibrary.org/b/id/8231708-L.jpg" alt="The Lord of the Rings">
-    <h3>The Lord of the Rings</h3>
-    <p class="author">J.R.R. Tolkien</p>
-    <span class="tag">Fantasy</span>
-  </a>
-</div>
-
-<div class="book-card">
-  <a href="/reading/books/read/v-for-vendetta-by-alan-moore/">
-    <img src="https://covers.openlibrary.org/b/id/8486391-L.jpg" alt="V for Vendetta">
-    <h3>V for Vendetta</h3>
-    <p class="author">Alan Moore</p>
-    <span class="tag">Graphic Novel</span>
-  </a>
-</div>
-
-</div>
-
-<style>
-.book-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+func echoConcat() string {
+	s := ""
+	for _, arg := range os.Args[1:] {
+		s += arg
+	}
+	return s
 }
 
-.book-card {
-  background: var(--md-default-bg-color);
-  border: 1px solid var(--md-default-fg-color--lightest);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+func echoJoin() string {
+	return strings.Join(os.Args[1:], "")
 }
 
-.book-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+func BenchmarkEchoConcat(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = echoConcat()
+	}
 }
 
-.book-card a {
-  text-decoration: none;
-  color: inherit;
-  display: block;
+func BenchmarkEchoJoin(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = echoJoin()
+	}
+}
+```
+
+### Exercise 1.4: Modif y dup2 to print the names of all files in which each duplicated line occurs.
+
+```go
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+func main() {
+	counts := make(map[string]int)
+	files := make(map[string]map[string]bool)
+
+	for _, name := range os.Args[1:] {
+		f, err := os.Open(name)
+		if err != nil {
+			continue
+		}
+		input := bufio.NewScanner(f)
+		for input.Scan() {
+			line := input.Text()
+			counts[line]++
+			if files[line] == nil {
+				files[line] = make(map[string]bool)
+			}
+			files[line][name] = true
+		}
+		f.Close()
+	}
+
+	for line, n := range counts {
+		if n > 1 {
+			fmt.Print(n, "\t", line)
+			for name := range files[line] {
+				fmt.Print("\t", name)
+			}
+			fmt.Println()
+		}
+	}
+}
+```
+
+### Exercise 1.5: Change the Lissajous program’s color palette to green on black, for added authenticity. To cre ate the web color #RRGGBB, use color.RGBA{0xRR, 0xGG, 0xBB, 0xff}, where each pair of hexadecimal digits represents the intensity of the red, green, or blue component of the pixel.
+
+```go
+package main
+
+import (
+	"image"
+	"image/color"
+	"image/gif"
+	"math"
+	"math/rand"
+	"os"
+)
+
+var palette = []color.Color{
+	color.Black,
+	color.RGBA{255, 0, 0, 255},
+	color.RGBA{0, 255, 0, 255},
+	color.RGBA{0, 0, 255, 255},
 }
 
-.book-card img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  display: block;
+const (
+	whiteIndex = 0
+)
+
+func main() {
+	const (
+		cycles  = 5
+		res     = 0.001
+		size    = 100
+		nframes = 64
+		delay   = 8
+	)
+
+	freq := rand.Float64() * 3.0
+	anim := gif.GIF{LoopCount: nframes}
+	phase := 0.0
+	for i := 0; i < nframes; i++ {
+		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
+		img := image.NewPaletted(rect, palette)
+		colorIndex := uint8(i%len(palette-1) + 1)
+		for t := 0.0; t < cycles*2*math.Pi; t += res {
+			x := math.Sin(t)
+			y := math.Sin(t*freq + phase)
+			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), colorIndex)
+		}
+		phase += 0.1
+		anim.Delay = append(anim.Delay, delay)
+		anim.Image = append(anim.Image, img)
+	}
+	gif.EncodeAll(os.Stdout, &anim)
+}
+```
+
+### Exercise 1.6: Modify the Lissajous program to produce images in multiple colors by adding more values to palette and then displaying them by changing the third argument of Set-ColorIndex in some interesting way.
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+const (
+	width, height = 600, 320
+	cells         = 100
+	xyrange       = 30.0
+)
+
+func main() {
+	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' style='stroke: grey; fill: white; stroke-width: 0.7' width='%d' height='%d'>", width, height)
+	for i := 0; i < cells; i++ {
+		for j := 0; j < cells; j++ {
+			ax, ay := corner(i+1, j)
+			bx, by := corner(i, j)
+			cx, cy := corner(i, j+1)
+			dx, dy := corner(i+1, j+1)
+			z := f((float64(i)/cells-0.5)*2*xyrange, (float64(j)/cells-0.5)*2*xyrange)
+			color := "blue"
+			if z > 0 {
+				color = "red"
+			}
+			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' style='fill:%s'/>", ax, ay, bx, by, cx, cy, dx, dy, color)
+		}
+	}
+	fmt.Println("</svg>")
 }
 
-.book-card h3 {
-  margin: 1rem 1rem 0.5rem;
-  font-size: 1.1rem;
-  line-height: 1.3;
-  min-height: 2.6em;
+func corner(i, j int) (float64, float64) {
+	x := xyrange * (float64(i)/cells - 0.5)
+	y := xyrange * (float64(j)/cells - 0.5)
+	z := f(x, y)
+	sx := width/2 + (x-y)*math.Cos(math.Pi/6)*width/xyrange/2
+	sy := height/2 + (x+y)*math.Sin(math.Pi/6)*width/xyrange/2 - z*height*0.4
+	return sx, sy
 }
 
-.book-card .author {
-  margin: 0 1rem;
-  color: var(--md-default-fg-color--light);
-  font-size: 0.9rem;
+func f(x, y float64) float64 {
+	r := math.Hypot(x, y)
+	return math.Sin(r) / r
+}
+```
+
+### Exercise 1.7: The function call io.Copy(dst, src) reads from src and writes to dst. Use it instead of ioutil.ReadAll to copy the response body to os.Stdout without requiring a buffer large enough to hold the entire stream. Be sure to check the error result of io.Copy.
+
+```go
+package main
+
+import (
+	"io"
+	"net/http"
+	"os"
+)
+
+func main() {
+	resp, _ := http.Get(os.Args[1])
+	io.Copy(os.Stdout, resp.Body)
+	resp.Body.Close()
+}
+```
+
+### Exercise 1.8: Modify fetch to add the prefix http:// to each argument URL if it is missing. You might want to use strings.HasPrefix.
+
+```go
+package main
+
+import (
+	"io"
+	"net/http"
+	"os"
+	"strings"
+)
+
+func main() {
+	url := os.Args[1]
+	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+		url = "http://" + url
+	}
+	resp, _ := http.Get(url)
+	io.Copy(os.Stdout, resp.Body)
+	resp.Body.Close()
+}
+```
+
+### Exercise 1.9: Modify fetch to also print the HTTP status code, found in resp.Status.
+
+```go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+func main() {
+	resp, _ := http.Get(os.Args[1])
+	fmt.Println(resp.Status)
+	io.Copy(os.Stdout, resp.Body)
+	resp.Body.Close()
+}
+```
+
+### Exercise 1.10: Find a web site that produces a large amount of data. Investigate caching by running fetchall twice in succession to see whether the reported time changes much. Do you get the same content each time? Modify fetchall to print its output to a file so it can be examined.
+
+```go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"time"
+)
+
+func fetch(url string, ch chan<- string) {
+	start := time.Now()
+	resp, _ := http.Get(url)
+	n, _ := io.Copy(io.Discard, resp.Body)
+	resp.Body.Close()
+	ch <- fmt.Sprintf("%.2fs %7d %s", time.Since(start).Seconds(), n, url)
 }
 
-.book-card .tag {
-  display: inline-block;
-  margin: 0.5rem 1rem 1rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--md-primary-fg-color);
-  color: white;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
+func main() {
+	start := time.Now()
+	ch := make(chan string)
+	for _, url := range os.Args[1:] {
+		go fetch(url, ch)
+	}
+	for range os.Args[1:] {
+		fmt.Println(<-ch)
+	}
+	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
+}
+```
+
+### Exercise 1.11: Try fetchall with longer argument lists, such as samples from the top million web sites available at alexa.com. How does the program behave if a web site just doesn’t respond? (Section 8.9 describes mechanisms for coping in such cases.)
+
+```go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"time"
+)
+
+func fetch(url string, ch chan<- string) {
+	start := time.Now()
+	resp, err := http.Get(url)
+	if err != nil {
+		ch <- err.Error()
+		return
+	}
+	n, _ := io.Copy(io.Discard, resp.Body)
+	resp.Body.Close()
+	ch <- fmt.Sprintf("%.2fs %7d %s", time.Since(start).Seconds(), n, url)
 }
 
-@media (max-width: 768px) {
-  .book-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  
-  .book-card img {
-    height: 220px;
-  }
+func main() {
+	ch := make(chan string)
+	for _, url := range os.Args[1:] {
+		go fetch(url, ch)
+	}
+	for range os.Args[1:] {
+		fmt.Println(<-ch)
+	}
 }
-</style>
+```
 
----
+### Exercise 1.2: Modify the Lissajous server to read parameter values from the URL. For example, you mig ht arrange it so that a URL like http://localhost:8000/?cycles=20 sets the number of cycles to 20 instead of the default 5. Use the strconv.Atoi func tion to convert the string parameter into an integer. You can see its documentation wit h go doc strconv.Atoi.
 
-## Recently Added
+```go
+package main
 
-Check back regularly for new additions to our collection.
+import (
+	"image"
+	"image/color"
+	"image/gif"
+	"math"
+	"math/rand"
+	"net/http"
+)
 
-**Total Books**: 12 displayed | [View All →](/reading/books/read/)
+var palette = []color.Color{color.White, color.Black}
+
+func lissajous(w http.ResponseWriter) {
+	const (
+		cycles  = 5
+		res     = 0.001
+		size    = 100
+		nframes = 64
+		delay   = 8
+	)
+	freq := rand.Float64() * 3.0
+	anim := gif.GIF{LoopCount: nframes}
+	phase := 0.0
+	for i := 0; i < nframes; i++ {
+		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
+		img := image.NewPaletted(rect, palette)
+		for t := 0.0; t < cycles*2*math.Pi; t += res {
+			x := math.Sin(t)
+			y := math.Sin(t*freq + phase)
+			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), 1)
+		}
+		phase += 0.1
+		anim.Delay = append(anim.Delay, delay)
+		anim.Image = append(anim.Image, img)
+	}
+	gif.EncodeAll(w, &anim)
+}
+
+func main() {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		lissajous(w)
+	})
+	http.ListenAndServe(":8000", nil)
+}
+```
