@@ -620,24 +620,793 @@ func f(x, y float64) float64 {
 
 ### Exercise 3.2: Experiment with visualizations of other functions fro m the math package. Can you produce an egg box, moguls, or a saddle?
 
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+const (
+	width, height = 600, 320
+	cells         = 100
+	xyrange       = 30.0
+	xyscale       = width / 2 / xyrange
+	zscale        = height * 0.4
+	angle         = math.Pi / 6
+)
+
+var sin30, cos30 = math.Sin(angle), math.Cos(angle)
+
+func main() {
+	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
+		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
+		"width='%d' height='%d'>", width, height)
+	for i := 0; i < cells; i++ {
+		for j := 0; j < cells; j++ {
+			ax, ay, ok1 := corner(i+1, j)
+			bx, by, ok2 := corner(i, j)
+			cx, cy, ok3 := corner(i, j+1)
+			dx, dy, ok4 := corner(i+1, j+1)
+
+			if !ok1 || !ok2 || !ok3 || !ok4 {
+				continue
+			}
+
+			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
+				ax, ay, bx, by, cx, cy, dx, dy)
+		}
+	}
+	fmt.Println("</svg>")
+}
+
+func corner(i, j int) (float64, float64, bool) {
+	x := xyrange * (float64(i)/cells - 0.5)
+	y := xyrange * (float64(j)/cells - 0.5)
+
+	z := f(x, y)
+
+	if !math.IsFinite(z) {
+		return 0, 0, false
+	}
+
+	sx := width/2 + (x-y)*cos30*xyscale
+	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
+
+	if !math.IsFinite(sx) || !math.IsFinite(sy) {
+		return 0, 0, false
+	}
+
+	return sx, sy, true
+}
+
+func eggBox(x, y float64) float64 {
+	return math.Sin(x) + math.Sin(y)
+}
+
+func moguls(x, y float64) float64 {
+	return math.Sin(x) * math.Cos(y) * 10
+}
+
+func saddle(x, y float64) float64 {
+	return (x*x - y*y) / 300
+}
+
+// Use one of the above functions
+func f(x, y float64) float64 {
+	return saddle(x, y)
+}
+```
+
 ### Exercise 3.3: Color each polygon based on its height, so that the peaks are colored red(#ff0000) and the val leys blue (#0000ff).
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+const (
+	width, height = 600, 320
+	cells         = 100
+	xyrange       = 30.0
+	xyscale       = width / 2 / xyrange
+	zscale        = height * 0.4
+	angle         = math.Pi / 6
+)
+
+var sin30, cos30 = math.Sin(angle), math.Cos(angle)
+
+func main() {
+	fmt.Printf("<svg xmlns='http://www.w3.org/2000/svg' "+
+		"style='stroke: grey; stroke-width: 0.7' "+
+		"width='%d' height='%d'>", width, height)
+	for i := 0; i < cells; i++ {
+		for j := 0; j < cells; j++ {
+			ax, ay, az, ok1 := corner(i+1, j)
+			bx, by, bz, ok2 := corner(i, j)
+			cx, cy, cz, ok3 := corner(i, j+1)
+			dx, dy, dz, ok4 := corner(i+1, j+1)
+
+			if !ok1 || !ok2 || !ok3 || !ok4 {
+				continue
+			}
+
+			// Calculate average height of the polygon
+			avgZ := (az + bz + cz + dz) / 4
+			color := getColor(avgZ)
+
+			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill='%s'/>\n",
+				ax, ay, bx, by, cx, cy, dx, dy, color)
+		}
+	}
+	fmt.Println("</svg>")
+}
+
+func corner(i, j int) (float64, float64, float64, bool) {
+	x := xyrange * (float64(i)/cells - 0.5)
+	y := xyrange * (float64(j)/cells - 0.5)
+
+	z := f(x, y)
+
+	if !math.IsFinite(z) {
+		return 0, 0, 0, false
+	}
+
+	sx := width/2 + (x-y)*cos30*xyscale
+	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
+
+	if !math.IsFinite(sx) || !math.IsFinite(sy) {
+		return 0, 0, 0, false
+	}
+
+	return sx, sy, z, true
+}
+
+func getColor(z float64) string {
+	min, max := -1.0, 1.0
+	normalized := (z - min) / (max - min)
+
+	if normalized < 0 {
+		normalized = 0
+	}
+	if normalized > 1 {
+		normalized = 1
+	}
+
+	red := int(normalized * 255)
+	blue := int((1 - normalized) * 255)
+
+	return fmt.Sprintf("#%02x00%02x", red, blue)
+}
+
+func f(x, y float64) float64 {
+	r := math.Hypot(x, y)
+	return math.Sin(r) / r
+}
+```
 
 ### Exercise 3.4: Following the approach of the Lissajous example in Section 1.7, construct a web server that computes surfaces and writes SVG data to the client. The server must set the Content-Type header like this: `w.Header().Set("Content-Type", "image/svg+xml")`
 
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"math"
+	"net/http"
+)
+
+const (
+	width, height = 600, 320
+	cells         = 100
+	xyrange       = 30.0
+	xyscale       = width / 2 / xyrange
+	zscale        = height * 0.4
+	angle         = math.Pi / 6
+)
+
+var sin30, cos30 = math.Sin(angle), math.Cos(angle)
+
+func main() {
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "image/svg+xml")
+	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
+		"style='stroke: grey; fill: white; stroke-width: 0.7' "+
+		"width='%d' height='%d'>", width, height)
+	for i := 0; i < cells; i++ {
+		for j := 0; j < cells; j++ {
+			ax, ay, ok1 := corner(i+1, j)
+			bx, by, ok2 := corner(i, j)
+			cx, cy, ok3 := corner(i, j+1)
+			dx, dy, ok4 := corner(i+1, j+1)
+
+			if !ok1 || !ok2 || !ok3 || !ok4 {
+				continue
+			}
+
+			fmt.Fprintf(w, "<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
+				ax, ay, bx, by, cx, cy, dx, dy)
+		}
+	}
+	fmt.Fprintln(w, "</svg>")
+}
+
+func corner(i, j int) (float64, float64, bool) {
+	x := xyrange * (float64(i)/cells - 0.5)
+	y := xyrange * (float64(j)/cells - 0.5)
+
+	z := f(x, y)
+
+	if !math.IsFinite(z) {
+		return 0, 0, false
+	}
+
+	sx := width/2 + (x-y)*cos30*xyscale
+	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
+
+	if !math.IsFinite(sx) || !math.IsFinite(sy) {
+		return 0, 0, false
+	}
+
+	return sx, sy, true
+}
+
+func f(x, y float64) float64 {
+	r := math.Hypot(x, y)
+	return math.Sin(r) / r
+}
+```
+
 ### Exercise 3.5: Implement a full-color Mandelbrot set using the function image.NewRGBA and the type color.RGBA or color.YCbCr.
+
+```go
+package main
+
+import (
+	"image"
+	"image/color"
+	"image/png"
+	"math/cmplx"
+	"os"
+)
+
+func main() {
+	const (
+		xmin, ymin, xmax, ymax = -2, -2, +2, +2
+		width, height          = 1024, 1024
+	)
+
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	for py := 0; py < height; py++ {
+		y := float64(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			x := float64(px)/width*(xmax-xmin) + xmin
+			z := complex(x, y)
+			img.Set(px, py, mandelbrot(z))
+		}
+	}
+	png.Encode(os.Stdout, img)
+}
+
+func mandelbrot(z complex128) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	var v complex128
+	for n := uint8(0); n < iterations; n++ {
+		v = v*v + z
+		if cmplx.Abs(v) > 2 {
+			// Create colorful gradient based on iteration count
+			return color.RGBA{
+				R: 255 - contrast*n,
+				G: contrast * n,
+				B: 128 + contrast*n/2,
+				A: 255,
+			}
+		}
+	}
+	return color.Black
+}
+```
 
 ### Exercise 3.6: Supersampling is a technique to reduce the effect of pixelation by computing the color value at several points wit hin each pixel and taking the average. The simplest method is to divide each pixel into four ‘‘subpixels. ’’ Implement it.
 
+```go
+package main
+
+import (
+	"image"
+	"image/color"
+	"image/png"
+	"math/cmplx"
+	"os"
+)
+
+func main() {
+	const (
+		xmin, ymin, xmax, ymax = -2, -2, +2, +2
+		width, height          = 1024, 1024
+	)
+
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	for py := 0; py < height; py++ {
+		y := float64(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			x := float64(px)/width*(xmax-xmin) + xmin
+			img.Set(px, py, supersample(x, y, width, height, xmin, xmax, ymin, ymax))
+		}
+	}
+	png.Encode(os.Stdout, img)
+}
+
+func supersample(x, y float64, width, height int, xmin, xmax, ymin, ymax float64) color.Color {
+	offsets := []float64{-0.25, 0.25}
+	var r, g, b, a uint32
+
+	dx := (xmax - xmin) / float64(width)
+	dy := (ymax - ymin) / float64(height)
+
+	for _, ox := range offsets {
+		for _, oy := range offsets {
+			z := complex(x+ox*dx, y+oy*dy)
+			c := mandelbrot(z)
+			r1, g1, b1, a1 := c.RGBA()
+			r += r1
+			g += g1
+			b += b1
+			a += a1
+		}
+	}
+
+	return color.RGBA{
+		R: uint8(r / 4 / 257),
+		G: uint8(g / 4 / 257),
+		B: uint8(b / 4 / 257),
+		A: uint8(a / 4 / 257),
+	}
+}
+
+func mandelbrot(z complex128) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	var v complex128
+	for n := uint8(0); n < iterations; n++ {
+		v = v*v + z
+		if cmplx.Abs(v) > 2 {
+			return color.RGBA{
+				R: 255 - contrast*n,
+				G: contrast * n,
+				B: 128 + contrast*n/2,
+				A: 255,
+			}
+		}
+	}
+	return color.Black
+}
+```
+
 ### Exercise 3.7: Another simple fractal uses Newton’s method to find complex solutions to a function such as z4−1 = 0. Shade each starting point by the number of iterations required to et close to one of the four roots. Color each point by the root it approaches.
+
+```go
+package main
+
+import (
+	"image"
+	"image/color"
+	"image/png"
+	"math/cmplx"
+	"os"
+)
+
+func main() {
+	const (
+		xmin, ymin, xmax, ymax = -2, -2, +2, +2
+		width, height          = 1024, 1024
+	)
+
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	for py := 0; py < height; py++ {
+		y := float64(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			x := float64(px)/width*(xmax-xmin) + xmin
+			z := complex(x, y)
+			img.Set(px, py, newton(z))
+		}
+	}
+	png.Encode(os.Stdout, img)
+}
+
+func f(z complex128) complex128 {
+	return z*z*z*z - 1
+}
+
+func fPrime(z complex128) complex128 {
+	return 4 * z * z * z
+}
+
+func newton(z complex128) color.Color {
+	const iterations = 50
+	const tolerance = 1e-6
+
+	roots := []complex128{
+		complex(1, 0),
+		complex(-1, 0),
+		complex(0, 1),
+		complex(0, -1),
+	}
+
+	colors := []color.RGBA{
+		{255, 0, 0, 255},   // Red
+		{0, 255, 0, 255},   // Green
+		{0, 0, 255, 255},   // Blue
+		{255, 255, 0, 255}, // Yellow
+	}
+
+	for n := 0; n < iterations; n++ {
+		z = z - f(z)/fPrime(z)
+
+		for i, root := range roots {
+			if cmplx.Abs(z-root) < tolerance {
+				shade := uint8(255 - (255 * n / iterations))
+				c := colors[i]
+				return color.RGBA{
+					R: uint8(int(c.R) * int(shade) / 255),
+					G: uint8(int(c.G) * int(shade) / 255),
+					B: uint8(int(c.B) * int(shade) / 255),
+					A: 255,
+				}
+			}
+		}
+	}
+
+	return color.Black
+}
+```
 
 ### Exercise 3.8: Render ing fractals at high zoom levels demands great arithmetic precision. Implement the same fractal using four different representations of numbers: complex64, complex128, big.Float, and big.Rat. (The latter two types are found in the math/big package. Float uses arbitrary but bounded-precision floating-point; Rat uses unbounded-precision rational numbers.) How do they comp are in performance and memory usage? At what zoom levels do render ing artifacts become visible?
 
-### Exercise 3.9: Write a web ser ver that renders fractals and writes the image data to the client. Allow the client to specify the x, y, and zoom values as parameters to the HTTP request.
+```go
+package main
+
+import (
+	"image"
+	"image/color"
+	"image/png"
+	"math/big"
+	"math/cmplx"
+	"os"
+)
+
+func mandelbrot64(z complex64) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	var v complex64
+	for n := uint8(0); n < iterations; n++ {
+		v = v*v + z
+		if real(v)*real(v)+imag(v)*imag(v) > 4 {
+			return color.Gray{255 - contrast*n}
+		}
+	}
+	return color.Black
+}
+
+func mandelbrot128(z complex128) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	var v complex128
+	for n := uint8(0); n < iterations; n++ {
+		v = v*v + z
+		if cmplx.Abs(v) > 2 {
+			return color.Gray{255 - contrast*n}
+		}
+	}
+	return color.Black
+}
+
+func mandelbrotBigFloat(zReal, zImag *big.Float) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	vReal := new(big.Float)
+	vImag := new(big.Float)
+
+	two := big.NewFloat(2)
+	four := big.NewFloat(4)
+
+	for n := uint8(0); n < iterations; n++ {
+		vReal2 := new(big.Float).Mul(vReal, vReal)
+		vImag2 := new(big.Float).Mul(vImag, vImag)
+
+		newVReal := new(big.Float).Sub(vReal2, vImag2)
+		newVReal.Add(newVReal, zReal)
+
+		newVImag := new(big.Float).Mul(vReal, vImag)
+		newVImag.Mul(newVImag, two)
+		newVImag.Add(newVImag, zImag)
+
+		vReal = newVReal
+		vImag = newVImag
+
+		absSquared := new(big.Float).Add(vReal2, vImag2)
+		if absSquared.Cmp(four) > 0 {
+			return color.Gray{255 - contrast*n}
+		}
+	}
+	return color.Black
+}
+
+func mandelbrotBigRat(zReal, zImag *big.Rat) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	vReal := new(big.Rat)
+	vImag := new(big.Rat)
+
+	four := big.NewRat(4, 1)
+	two := big.NewRat(2, 1)
+
+	for n := uint8(0); n < iterations; n++ {
+		vReal2 := new(big.Rat).Mul(vReal, vReal)
+		vImag2 := new(big.Rat).Mul(vImag, vImag)
+
+		newVReal := new(big.Rat).Sub(vReal2, vImag2)
+		newVReal.Add(newVReal, zReal)
+
+		newVImag := new(big.Rat).Mul(vReal, vImag)
+		newVImag.Mul(newVImag, two)
+		newVImag.Add(newVImag, zImag)
+
+		vReal = newVReal
+		vImag = newVImag
+
+		absSquared := new(big.Rat).Add(vReal2, vImag2)
+		if absSquared.Cmp(four) > 0 {
+			return color.Gray{255 - contrast*n}
+		}
+	}
+	return color.Black
+}
+
+func main() {
+	const (
+		xmin, ymin, xmax, ymax = -2, -2, +2, +2
+		width, height          = 1024, 1024
+	)
+
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	for py := 0; py < height; py++ {
+		y := float64(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			x := float64(px)/width*(xmax-xmin) + xmin
+			z := complex(x, y)
+			img.Set(px, py, mandelbrot128(z))
+		}
+	}
+	png.Encode(os.Stdout, img)
+}
+```
+
+### Exercise 3.9: Write a web server that renders fractals and writes the image data to the client. Allow the client to specify the x, y, and zoom values as parameters to the HTTP request.
+
+```go
+package main
+
+import (
+	"image"
+	"image/color"
+	"image/png"
+	"log"
+	"math/cmplx"
+	"net/http"
+	"strconv"
+)
+
+func main() {
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	x, _ := strconv.ParseFloat(r.URL.Query().Get("x"), 64)
+	y, _ := strconv.ParseFloat(r.URL.Query().Get("y"), 64)
+	zoom, _ := strconv.ParseFloat(r.URL.Query().Get("zoom"), 64)
+
+	if zoom == 0 {
+		zoom = 1
+	}
+
+	const (
+		width, height = 1024, 1024
+	)
+
+	scale := 4.0 / zoom
+	xmin := x - scale/2
+	xmax := x + scale/2
+	ymin := y - scale/2
+	ymax := y + scale/2
+
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	for py := 0; py < height; py++ {
+		yCoord := float64(py)/height*(ymax-ymin) + ymin
+		for px := 0; px < width; px++ {
+			xCoord := float64(px)/width*(xmax-xmin) + xmin
+			z := complex(xCoord, yCoord)
+			img.Set(px, py, mandelbrot(z))
+		}
+	}
+
+	w.Header().Set("Content-Type", "image/png")
+	png.Encode(w, img)
+}
+
+func mandelbrot(z complex128) color.Color {
+	const iterations = 200
+	const contrast = 15
+
+	var v complex128
+	for n := uint8(0); n < iterations; n++ {
+		v = v*v + z
+		if cmplx.Abs(v) > 2 {
+			return color.Gray{255 - contrast*n}
+		}
+	}
+	return color.Black
+}
+```
 
 ### Exercise 3.10: Write a non-rec ursive version of comma, using bytes.Buffer instead of string concatenation.
 
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+)
+
+func comma(s string) string {
+	var buf bytes.Buffer
+	n := len(s)
+
+	prefix := n % 3
+	if prefix == 0 {
+		prefix = 3
+	}
+
+	buf.WriteString(s[:prefix])
+
+	for i := prefix; i < n; i += 3 {
+		buf.WriteByte(',')
+		buf.WriteString(s[i : i+3])
+	}
+
+	return buf.String()
+}
+```
+
 ### Exercise 3.11: Enhance comma so that it deals correctly with floating-point numbers and an optional sign.
+
+```go
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"strings"
+)
+
+func comma(s string) string {
+	var buf bytes.Buffer
+
+	start := 0
+	if s[0] == '+' || s[0] == '-' {
+		buf.WriteByte(s[0])
+		start = 1
+	}
+
+	parts := strings.Split(s[start:], ".")
+	intPart := parts[0]
+
+	n := len(intPart)
+	prefix := n % 3
+	if prefix == 0 && n > 0 {
+		prefix = 3
+	}
+
+	if prefix > 0 {
+		buf.WriteString(intPart[:prefix])
+	}
+
+	for i := prefix; i < n; i += 3 {
+		if i > 0 {
+			buf.WriteByte(',')
+		}
+		buf.WriteString(intPart[i : i+3])
+	}
+
+	if len(parts) > 1 {
+		buf.WriteByte('.')
+		buf.WriteString(parts[1])
+	}
+
+	return buf.String()
+}
+```
 
 ### Exercise 3.12: Write a function that rep orts whether two strings are anagrams of each other, that is, they contain the same letters in a different order.
 
-### Exercise 3.13: Wr ite const declarations for KB, MB, up through YB as compactly as you can.
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func areAnagrams(s1, s2 string) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+
+	counts := make(map[rune]int)
+
+	for _, r := range s1 {
+		counts[r]++
+	}
+
+	for _, r := range s2 {
+		counts[r]--
+		if counts[r] < 0 {
+			return false
+		}
+	}
+
+	for _, count := range counts {
+		if count != 0 {
+			return false
+		}
+	}
+
+	return true
+}
+```
+
+### Exercise 3.13: Write const declarations for KB, MB, up through YB as compactly as you can.
+
+```go
+package main
+
+const (
+	KB = 1000
+	MB = KB * 1000
+	GB = MB * 1000
+	TB = GB * 1000
+	PB = TB * 1000
+	EB = PB * 1000
+	ZB = EB * 1000
+	YB = ZB * 1000
+)
+
+const (
+	_ = 1 << (10 * iota)
+	KiB
+	MiB
+	GiB
+	TiB
+	PiB
+	EiB
+	ZiB
+	YiB
+)
+```
