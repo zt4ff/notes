@@ -1,0 +1,4099 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../../the-shelf/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>21 The Go Programming Language - Kayode Oluwasegun</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="slate" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-go-programming-language-exercises-solutions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Kayode Oluwasegun" class="md-header__button md-logo" aria-label="Kayode Oluwasegun" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kayode Oluwasegun
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              21 The Go Programming Language
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="slate" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="slate" data-md-color-accent="teal"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Kayode Oluwasegun" class="md-nav__button md-logo" aria-label="Kayode Oluwasegun" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Kayode Oluwasegun
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reading
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reading
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../the-shelf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Shelf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Books
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Books
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2_1" id="__nav_2_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Read
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Read
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21 The Go Programming Language
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    21 The Go Programming Language
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-11-modif-y-the-echo-program-to-also-print-osargs0-the-name-of-the-command-that-invoked-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.1 Modif y the echo program to also print os.Args[0], the name of the command that invoked it.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-12-modify-the-echo-program-to-print-the-index-and-value-of-each-of-its-arguments-one-per-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.2 Modify the echo program to print the index and value of each of its arguments, one per line.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-13-exercise-13-experiment-to-measure-the-difference-in-running-time-between-our-potentially-inefficient-versions-and-the-one-that-uses-stringsjoin-section-16-illustrates-part-of-the-time-package-and-section-114-shows-how-to-write-benchmark-tests-for-systematic-per-formance-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.3 Exercise 1.3: Experiment to measure the difference in running time between our potentially inefficient versions and the one that uses strings.Join. (Section 1.6 illustrates part of the time package, and Section 11.4 shows how to write benchmark tests for systematic per- formance evaluation.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-14-modif-y-dup2-to-print-the-names-of-all-files-in-which-each-duplicated-line-occurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.4: Modif y dup2 to print the names of all files in which each duplicated line occurs.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-15-change-the-lissajous-programs-color-palette-to-green-on-black-for-added-authenticity-to-cre-ate-the-web-color-rrggbb-use-colorrgba0xrr-0xgg-0xbb-0xff-where-each-pair-of-hexadecimal-digits-represents-the-intensity-of-the-red-green-or-blue-component-of-the-pixel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.5: Change the Lissajous program’s color palette to green on black, for added authenticity. To cre ate the web color #RRGGBB, use color.RGBA{0xRR, 0xGG, 0xBB, 0xff}, where each pair of hexadecimal digits represents the intensity of the red, green, or blue component of the pixel.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-16-modify-the-lissajous-program-to-produce-images-in-multiple-colors-by-adding-more-values-to-palette-and-then-displaying-them-by-changing-the-third-argument-of-set-colorindex-in-some-interesting-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.6: Modify the Lissajous program to produce images in multiple colors by adding more values to palette and then displaying them by changing the third argument of Set-ColorIndex in some interesting way.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-17-the-function-call-iocopydst-src-reads-from-src-and-writes-to-dst-use-it-instead-of-ioutilreadall-to-copy-the-response-body-to-osstdout-without-requiring-a-buffer-large-enough-to-hold-the-entire-stream-be-sure-to-check-the-error-result-of-iocopy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.7: The function call io.Copy(dst, src) reads from src and writes to dst. Use it instead of ioutil.ReadAll to copy the response body to os.Stdout without requiring a buffer large enough to hold the entire stream. Be sure to check the error result of io.Copy.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-18-modify-fetch-to-add-the-prefix-http-to-each-argument-url-if-it-is-missing-you-might-want-to-use-stringshasprefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.8: Modify fetch to add the prefix http:// to each argument URL if it is missing. You might want to use strings.HasPrefix.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-19-modify-fetch-to-also-print-the-http-status-code-found-in-respstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.9: Modify fetch to also print the HTTP status code, found in resp.Status.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-110-find-a-web-site-that-produces-a-large-amount-of-data-investigate-caching-by-running-fetchall-twice-in-succession-to-see-whether-the-reported-time-changes-much-do-you-get-the-same-content-each-time-modify-fetchall-to-print-its-output-to-a-file-so-it-can-be-examined" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.10: Find a web site that produces a large amount of data. Investigate caching by running fetchall twice in succession to see whether the reported time changes much. Do you get the same content each time? Modify fetchall to print its output to a file so it can be examined.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-111-try-fetchall-with-longer-argument-lists-such-as-samples-from-the-top-million-web-sites-available-at-alexacom-how-does-the-program-behave-if-a-web-site-just-doesnt-respond-section-89-describes-mechanisms-for-coping-in-such-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.11: Try fetchall with longer argument lists, such as samples from the top million web sites available at alexa.com. How does the program behave if a web site just doesn’t respond? (Section 8.9 describes mechanisms for coping in such cases.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-12-modify-the-lissajous-server-to-read-parameter-values-from-the-url-for-example-you-mig-ht-arrange-it-so-that-a-url-like-httplocalhost8000cycles20-sets-the-number-of-cycles-to-20-instead-of-the-default-5-use-the-strconvatoi-func-tion-to-convert-the-string-parameter-into-an-integer-you-can-see-its-documentation-wit-h-go-doc-strconvatoi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.2: Modify the Lissajous server to read parameter values from the URL. For example, you mig ht arrange it so that a URL like http://localhost:8000/?cycles=20 sets the number of cycles to 20 instead of the default 5. Use the strconv.Atoi func tion to convert the string parameter into an integer. You can see its documentation wit h go doc strconv.Atoi.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-21-add-types-constants-and-functions-to-tempconv-for-processing-temperatures-in-the-kelvin-scale-where-zero-kelvin-is-27315c-and-a-difference-of-1k-has-the-same-magnitude-as-1c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.1: Add types, constants, and functions to tempconv for processing temperatures in the Kelvin scale, where zero Kelvin is −273.15°C and a difference of 1K has the same magnitude as 1°C.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-22-write-a-general-purpose-unit-conversion-program-analogous-to-cf-that-reads-numbers-from-its-command-line-arguments-or-from-the-standard-input-if-there-are-no-arguments-and-converts-each-number-into-units-like-temperature-in-celsius-and-fahren-heit-length-in-feet-and-meters-weig-ht-in-pounds-and-kilograms-and-the-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.2: Write a general-purpose unit-conversion program analogous to cf that reads numbers from its command-line arguments or from the standard input if there are no arguments, and converts each number into units like temperature in Celsius and Fahren heit, length in feet and meters, weig ht in pounds and kilograms, and the like.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-23-rewrite-popcount-to-use-a-loop-instead-of-a-single-expression-compare-the-performance-of-the-two-versions-section-114-shows-how-to-compare-the-per-formance-of-different-implementations-systematically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.3: Rewrite PopCount to use a loop instead of a single expression. Compare the performance of the two versions. (Section 11.4 shows how to compare the per formance of different implementations systematically.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-24-write-a-version-of-popcount-that-counts-bits-by-shifting-its-argument-through-64-bit-positions-testing-the-rightmost-bit-each-time-compare-its-performance-to-the-table-lookup-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.4: Write a version of PopCount that counts bits by shifting its argument through 64 bit positions, testing the rightmost bit each time. Compare its performance to the table-lookup version.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-25-the-expression-xx-1-clears-the-rightmost-non-zero-bit-of-x-write-a-version-of-popcount-that-counts-bits-by-using-this-fact-and-assess-its-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.5: The expression x&amp;(x-1) clears the rightmost non-zero bit of x. Write a version of PopCount that counts bits by using this fact, and assess its performance.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chaper-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaper 3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chaper 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-31-if-the-function-f-returns-a-non-finite-float64-value-the-svg-file-will-contain-invalid-elements-although-many-svg-renderers-handle-this-gracefully-modify-the-program-to-skip-invalid-polygons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.1: If the function f returns a non-finite float64 value, the SVG file will contain invalid elements (although many SVG renderers handle this gracefully). Modify the program to skip invalid polygons.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-32-experiment-with-visualizations-of-other-functions-fro-m-the-math-package-can-you-produce-an-egg-box-moguls-or-a-saddle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.2: Experiment with visualizations of other functions fro m the math package. Can you produce an egg box, moguls, or a saddle?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-33-color-each-polygon-based-on-its-height-so-that-the-peaks-are-colored-redff0000-and-the-val-leys-blue-0000ff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.3: Color each polygon based on its height, so that the peaks are colored red(#ff0000) and the val leys blue (#0000ff).
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-34-following-the-approach-of-the-lissajous-example-in-section-17-construct-a-web-server-that-computes-surfaces-and-writes-svg-data-to-the-client-the-server-must-set-the-content-type-header-like-this-wheadersetcontent-type-imagesvgxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.4: Following the approach of the Lissajous example in Section 1.7, construct a web server that computes surfaces and writes SVG data to the client. The server must set the Content-Type header like this: w.Header().Set("Content-Type", "image/svg+xml")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-35-implement-a-full-color-mandelbrot-set-using-the-function-imagenewrgba-and-the-type-colorrgba-or-colorycbcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.5: Implement a full-color Mandelbrot set using the function image.NewRGBA and the type color.RGBA or color.YCbCr.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-36-supersampling-is-a-technique-to-reduce-the-effect-of-pixelation-by-computing-the-color-value-at-several-points-wit-hin-each-pixel-and-taking-the-average-the-simplest-method-is-to-divide-each-pixel-into-four-subpixels-implement-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.6: Supersampling is a technique to reduce the effect of pixelation by computing the color value at several points wit hin each pixel and taking the average. The simplest method is to divide each pixel into four ‘‘subpixels. ’’ Implement it.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-37-another-simple-fractal-uses-newtons-method-to-find-complex-solutions-to-a-function-such-as-z41-0-shade-each-starting-point-by-the-number-of-iterations-required-to-et-close-to-one-of-the-four-roots-color-each-point-by-the-root-it-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.7: Another simple fractal uses Newton’s method to find complex solutions to a function such as z4−1 = 0. Shade each starting point by the number of iterations required to et close to one of the four roots. Color each point by the root it approaches.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-38-render-ing-fractals-at-high-zoom-levels-demands-great-arithmetic-precision-implement-the-same-fractal-using-four-different-representations-of-numbers-complex64-complex128-bigfloat-and-bigrat-the-latter-two-types-are-found-in-the-mathbig-package-float-uses-arbitrary-but-bounded-precision-floating-point-rat-uses-unbounded-precision-rational-numbers-how-do-they-comp-are-in-performance-and-memory-usage-at-what-zoom-levels-do-render-ing-artifacts-become-visible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.8: Render ing fractals at high zoom levels demands great arithmetic precision. Implement the same fractal using four different representations of numbers: complex64, complex128, big.Float, and big.Rat. (The latter two types are found in the math/big package. Float uses arbitrary but bounded-precision floating-point; Rat uses unbounded-precision rational numbers.) How do they comp are in performance and memory usage? At what zoom levels do render ing artifacts become visible?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-39-write-a-web-server-that-renders-fractals-and-writes-the-image-data-to-the-client-allow-the-client-to-specify-the-x-y-and-zoom-values-as-parameters-to-the-http-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.9: Write a web server that renders fractals and writes the image data to the client. Allow the client to specify the x, y, and zoom values as parameters to the HTTP request.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-310-write-a-non-rec-ursive-version-of-comma-using-bytesbuffer-instead-of-string-concatenation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.10: Write a non-rec ursive version of comma, using bytes.Buffer instead of string concatenation.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-311-enhance-comma-so-that-it-deals-correctly-with-floating-point-numbers-and-an-optional-sign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.11: Enhance comma so that it deals correctly with floating-point numbers and an optional sign.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-312-write-a-function-that-rep-orts-whether-two-strings-are-anagrams-of-each-other-that-is-they-contain-the-same-letters-in-a-different-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.12: Write a function that rep orts whether two strings are anagrams of each other, that is, they contain the same letters in a different order.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-313-write-const-declarations-for-kb-mb-up-through-yb-as-compactly-as-you-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.13: Write const declarations for KB, MB, up through YB as compactly as you can.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-41-write-a-function-that-counts-the-number-of-bits-that-are-different-in-two-sha256-hashes-see-popcount-from-section-262" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.1: Write a function that counts the number of bits that are different in two SHA256 hashes. (See PopCount from Section 2.6.2.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-42-write-a-program-that-prints-the-sha256-hash-of-its-standard-input-by-default-but-supports-a-command-line-flag-to-print-the-sha384-or-sha512-hash-instead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.2: Write a program that prints the SHA256 hash of its standard input by default but supports a command-line flag to print the SHA384 or SHA512 hash instead.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-43-rewrite-reverse-to-use-an-array-pointer-instead-of-a-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.3: Rewrite reverse to use an array pointer instead of a slice.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-44-write-a-version-of-rotate-that-operates-in-a-single-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.4: Write a version of rotate that operates in a single pass.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-45-write-an-in-place-function-to-eliminate-adjacent-duplicates-in-a-string-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.5: Write an in-place function to eliminate adjacent duplicates in a []string slice.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-46-write-an-in-place-function-that-squashes-each-run-of-adjacent-unicode-spaces-see-unicodeisspace-in-a-utf-8-enco-ded-byte-slice-into-a-single-ascii-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.6: Write an in-place function that squashes each run of adjacent Unicode spaces (see unicode.IsSpace) in a UTF-8-enco ded []byte slice into a single ASCII space.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-47-modify-reverse-to-reverse-the-characters-of-a-byte-slice-that-represents-a-utf-8-encoded-string-in-place-can-you-do-it-without-allocat-ing-new-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.7: Modify reverse to reverse the characters of a []byte slice that represents a UTF-8-encoded string, in place. Can you do it without allocat ing new memory?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-48-modify-charcount-to-count-letters-digits-and-so-on-in-their-unicode-categories-using-functions-like-unicodeisletter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.8: Modify charcount to count letters, digits, and so on in their Unicode categories, using functions like unicode.IsLetter.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-49-write-a-program-wordfreq-to-rep-ort-the-frequency-of-each-word-in-an-input-text-file-call-inputsplitbufioscanwords-before-the-first-call-to-scan-to-break-the-input-into-words-instead-of-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.9: Write a program wordfreq to rep ort the frequency of each word in an input text file. Call input.Split(bufio.ScanWords) before the first call to Scan to break the input into words instead of lines.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-410-modify-issues-to-report-the-results-in-age-categories-say-less-than-a-month-old-less-than-a-year-old-and-more-than-a-year-old" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.10: Modify issues to report the results in age categories, say less than a month old, less than a year old, and more than a year old.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-411-build-a-tool-that-lets-users-create-read-update-and-close-github-issues-from-the-command-line-invoking-their-preferred-text-editor-when-subst-antial-text-input-is-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.11: Build a tool that lets users create, read, update, and close GitHub issues from the command line, invoking their preferred text editor when subst antial text input is required.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-412-the-popu-lar-web-comic-xkcd-has-a-json-interface-for-example-a-request-to-httpsxkcdcom571info0json-produces-a-detailed-description-of-comic-571-one-of-many-favorites-download-each-url-once-and-build-an-offline-index-write-a-tool-xkcd-that-using-this-index-prints-the-url-and-transcript-of-each-comic-that-matches-a-search-term-provided-on-the-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.12: The popu lar web comic xkcd has a JSON interface. For example, a request to https://xkcd.com/571/info.0.json produces a detailed description of comic 571, one of many favorites. Download each URL (once!) and build an offline index. Write a tool xkcd that, using this index, prints the URL and transcript of each comic that matches a search term provided on the command line.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-413-the-json-based-web-service-of-the-open-movie-databas-e-lets-you-search-httpsomdbapicom-for-a-movie-by-name-and-download-its-poster-image-write-a-tool-poster-that-downloads-the-poster-image-for-the-movie-named-on-the-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.13: The JSON-based web service of the Open Movie Databas e lets you search https://omdbapi.com/ for a movie by name and download its poster image. Write a tool poster that downloads the poster image for the movie named on the command line.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-414-create-a-web-server-that-quer-ies-github-once-and-then-allows-navigation-of-the-list-of-bug-rep-orts-milestones-and-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.14: Create a web server that quer ies GitHub once and then allows navigation of the list of bug rep orts, milestones, and users.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-11-modif-y-the-echo-program-to-also-print-osargs0-the-name-of-the-command-that-invoked-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.1 Modif y the echo program to also print os.Args[0], the name of the command that invoked it.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-12-modify-the-echo-program-to-print-the-index-and-value-of-each-of-its-arguments-one-per-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.2 Modify the echo program to print the index and value of each of its arguments, one per line.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-13-exercise-13-experiment-to-measure-the-difference-in-running-time-between-our-potentially-inefficient-versions-and-the-one-that-uses-stringsjoin-section-16-illustrates-part-of-the-time-package-and-section-114-shows-how-to-write-benchmark-tests-for-systematic-per-formance-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.3 Exercise 1.3: Experiment to measure the difference in running time between our potentially inefficient versions and the one that uses strings.Join. (Section 1.6 illustrates part of the time package, and Section 11.4 shows how to write benchmark tests for systematic per- formance evaluation.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-14-modif-y-dup2-to-print-the-names-of-all-files-in-which-each-duplicated-line-occurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.4: Modif y dup2 to print the names of all files in which each duplicated line occurs.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-15-change-the-lissajous-programs-color-palette-to-green-on-black-for-added-authenticity-to-cre-ate-the-web-color-rrggbb-use-colorrgba0xrr-0xgg-0xbb-0xff-where-each-pair-of-hexadecimal-digits-represents-the-intensity-of-the-red-green-or-blue-component-of-the-pixel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.5: Change the Lissajous program’s color palette to green on black, for added authenticity. To cre ate the web color #RRGGBB, use color.RGBA{0xRR, 0xGG, 0xBB, 0xff}, where each pair of hexadecimal digits represents the intensity of the red, green, or blue component of the pixel.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-16-modify-the-lissajous-program-to-produce-images-in-multiple-colors-by-adding-more-values-to-palette-and-then-displaying-them-by-changing-the-third-argument-of-set-colorindex-in-some-interesting-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.6: Modify the Lissajous program to produce images in multiple colors by adding more values to palette and then displaying them by changing the third argument of Set-ColorIndex in some interesting way.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-17-the-function-call-iocopydst-src-reads-from-src-and-writes-to-dst-use-it-instead-of-ioutilreadall-to-copy-the-response-body-to-osstdout-without-requiring-a-buffer-large-enough-to-hold-the-entire-stream-be-sure-to-check-the-error-result-of-iocopy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.7: The function call io.Copy(dst, src) reads from src and writes to dst. Use it instead of ioutil.ReadAll to copy the response body to os.Stdout without requiring a buffer large enough to hold the entire stream. Be sure to check the error result of io.Copy.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-18-modify-fetch-to-add-the-prefix-http-to-each-argument-url-if-it-is-missing-you-might-want-to-use-stringshasprefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.8: Modify fetch to add the prefix http:// to each argument URL if it is missing. You might want to use strings.HasPrefix.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-19-modify-fetch-to-also-print-the-http-status-code-found-in-respstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.9: Modify fetch to also print the HTTP status code, found in resp.Status.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-110-find-a-web-site-that-produces-a-large-amount-of-data-investigate-caching-by-running-fetchall-twice-in-succession-to-see-whether-the-reported-time-changes-much-do-you-get-the-same-content-each-time-modify-fetchall-to-print-its-output-to-a-file-so-it-can-be-examined" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.10: Find a web site that produces a large amount of data. Investigate caching by running fetchall twice in succession to see whether the reported time changes much. Do you get the same content each time? Modify fetchall to print its output to a file so it can be examined.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-111-try-fetchall-with-longer-argument-lists-such-as-samples-from-the-top-million-web-sites-available-at-alexacom-how-does-the-program-behave-if-a-web-site-just-doesnt-respond-section-89-describes-mechanisms-for-coping-in-such-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.11: Try fetchall with longer argument lists, such as samples from the top million web sites available at alexa.com. How does the program behave if a web site just doesn’t respond? (Section 8.9 describes mechanisms for coping in such cases.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-12-modify-the-lissajous-server-to-read-parameter-values-from-the-url-for-example-you-mig-ht-arrange-it-so-that-a-url-like-httplocalhost8000cycles20-sets-the-number-of-cycles-to-20-instead-of-the-default-5-use-the-strconvatoi-func-tion-to-convert-the-string-parameter-into-an-integer-you-can-see-its-documentation-wit-h-go-doc-strconvatoi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1.2: Modify the Lissajous server to read parameter values from the URL. For example, you mig ht arrange it so that a URL like http://localhost:8000/?cycles=20 sets the number of cycles to 20 instead of the default 5. Use the strconv.Atoi func tion to convert the string parameter into an integer. You can see its documentation wit h go doc strconv.Atoi.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-21-add-types-constants-and-functions-to-tempconv-for-processing-temperatures-in-the-kelvin-scale-where-zero-kelvin-is-27315c-and-a-difference-of-1k-has-the-same-magnitude-as-1c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.1: Add types, constants, and functions to tempconv for processing temperatures in the Kelvin scale, where zero Kelvin is −273.15°C and a difference of 1K has the same magnitude as 1°C.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-22-write-a-general-purpose-unit-conversion-program-analogous-to-cf-that-reads-numbers-from-its-command-line-arguments-or-from-the-standard-input-if-there-are-no-arguments-and-converts-each-number-into-units-like-temperature-in-celsius-and-fahren-heit-length-in-feet-and-meters-weig-ht-in-pounds-and-kilograms-and-the-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.2: Write a general-purpose unit-conversion program analogous to cf that reads numbers from its command-line arguments or from the standard input if there are no arguments, and converts each number into units like temperature in Celsius and Fahren heit, length in feet and meters, weig ht in pounds and kilograms, and the like.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-23-rewrite-popcount-to-use-a-loop-instead-of-a-single-expression-compare-the-performance-of-the-two-versions-section-114-shows-how-to-compare-the-per-formance-of-different-implementations-systematically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.3: Rewrite PopCount to use a loop instead of a single expression. Compare the performance of the two versions. (Section 11.4 shows how to compare the per formance of different implementations systematically.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-24-write-a-version-of-popcount-that-counts-bits-by-shifting-its-argument-through-64-bit-positions-testing-the-rightmost-bit-each-time-compare-its-performance-to-the-table-lookup-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.4: Write a version of PopCount that counts bits by shifting its argument through 64 bit positions, testing the rightmost bit each time. Compare its performance to the table-lookup version.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-25-the-expression-xx-1-clears-the-rightmost-non-zero-bit-of-x-write-a-version-of-popcount-that-counts-bits-by-using-this-fact-and-assess-its-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2.5: The expression x&amp;(x-1) clears the rightmost non-zero bit of x. Write a version of PopCount that counts bits by using this fact, and assess its performance.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chaper-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaper 3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chaper 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-31-if-the-function-f-returns-a-non-finite-float64-value-the-svg-file-will-contain-invalid-elements-although-many-svg-renderers-handle-this-gracefully-modify-the-program-to-skip-invalid-polygons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.1: If the function f returns a non-finite float64 value, the SVG file will contain invalid elements (although many SVG renderers handle this gracefully). Modify the program to skip invalid polygons.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-32-experiment-with-visualizations-of-other-functions-fro-m-the-math-package-can-you-produce-an-egg-box-moguls-or-a-saddle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.2: Experiment with visualizations of other functions fro m the math package. Can you produce an egg box, moguls, or a saddle?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-33-color-each-polygon-based-on-its-height-so-that-the-peaks-are-colored-redff0000-and-the-val-leys-blue-0000ff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.3: Color each polygon based on its height, so that the peaks are colored red(#ff0000) and the val leys blue (#0000ff).
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-34-following-the-approach-of-the-lissajous-example-in-section-17-construct-a-web-server-that-computes-surfaces-and-writes-svg-data-to-the-client-the-server-must-set-the-content-type-header-like-this-wheadersetcontent-type-imagesvgxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.4: Following the approach of the Lissajous example in Section 1.7, construct a web server that computes surfaces and writes SVG data to the client. The server must set the Content-Type header like this: w.Header().Set("Content-Type", "image/svg+xml")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-35-implement-a-full-color-mandelbrot-set-using-the-function-imagenewrgba-and-the-type-colorrgba-or-colorycbcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.5: Implement a full-color Mandelbrot set using the function image.NewRGBA and the type color.RGBA or color.YCbCr.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-36-supersampling-is-a-technique-to-reduce-the-effect-of-pixelation-by-computing-the-color-value-at-several-points-wit-hin-each-pixel-and-taking-the-average-the-simplest-method-is-to-divide-each-pixel-into-four-subpixels-implement-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.6: Supersampling is a technique to reduce the effect of pixelation by computing the color value at several points wit hin each pixel and taking the average. The simplest method is to divide each pixel into four ‘‘subpixels. ’’ Implement it.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-37-another-simple-fractal-uses-newtons-method-to-find-complex-solutions-to-a-function-such-as-z41-0-shade-each-starting-point-by-the-number-of-iterations-required-to-et-close-to-one-of-the-four-roots-color-each-point-by-the-root-it-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.7: Another simple fractal uses Newton’s method to find complex solutions to a function such as z4−1 = 0. Shade each starting point by the number of iterations required to et close to one of the four roots. Color each point by the root it approaches.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-38-render-ing-fractals-at-high-zoom-levels-demands-great-arithmetic-precision-implement-the-same-fractal-using-four-different-representations-of-numbers-complex64-complex128-bigfloat-and-bigrat-the-latter-two-types-are-found-in-the-mathbig-package-float-uses-arbitrary-but-bounded-precision-floating-point-rat-uses-unbounded-precision-rational-numbers-how-do-they-comp-are-in-performance-and-memory-usage-at-what-zoom-levels-do-render-ing-artifacts-become-visible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.8: Render ing fractals at high zoom levels demands great arithmetic precision. Implement the same fractal using four different representations of numbers: complex64, complex128, big.Float, and big.Rat. (The latter two types are found in the math/big package. Float uses arbitrary but bounded-precision floating-point; Rat uses unbounded-precision rational numbers.) How do they comp are in performance and memory usage? At what zoom levels do render ing artifacts become visible?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-39-write-a-web-server-that-renders-fractals-and-writes-the-image-data-to-the-client-allow-the-client-to-specify-the-x-y-and-zoom-values-as-parameters-to-the-http-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.9: Write a web server that renders fractals and writes the image data to the client. Allow the client to specify the x, y, and zoom values as parameters to the HTTP request.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-310-write-a-non-rec-ursive-version-of-comma-using-bytesbuffer-instead-of-string-concatenation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.10: Write a non-rec ursive version of comma, using bytes.Buffer instead of string concatenation.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-311-enhance-comma-so-that-it-deals-correctly-with-floating-point-numbers-and-an-optional-sign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.11: Enhance comma so that it deals correctly with floating-point numbers and an optional sign.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-312-write-a-function-that-rep-orts-whether-two-strings-are-anagrams-of-each-other-that-is-they-contain-the-same-letters-in-a-different-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.12: Write a function that rep orts whether two strings are anagrams of each other, that is, they contain the same letters in a different order.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-313-write-const-declarations-for-kb-mb-up-through-yb-as-compactly-as-you-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3.13: Write const declarations for KB, MB, up through YB as compactly as you can.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chapter 4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chapter 4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-41-write-a-function-that-counts-the-number-of-bits-that-are-different-in-two-sha256-hashes-see-popcount-from-section-262" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.1: Write a function that counts the number of bits that are different in two SHA256 hashes. (See PopCount from Section 2.6.2.)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-42-write-a-program-that-prints-the-sha256-hash-of-its-standard-input-by-default-but-supports-a-command-line-flag-to-print-the-sha384-or-sha512-hash-instead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.2: Write a program that prints the SHA256 hash of its standard input by default but supports a command-line flag to print the SHA384 or SHA512 hash instead.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-43-rewrite-reverse-to-use-an-array-pointer-instead-of-a-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.3: Rewrite reverse to use an array pointer instead of a slice.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-44-write-a-version-of-rotate-that-operates-in-a-single-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.4: Write a version of rotate that operates in a single pass.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-45-write-an-in-place-function-to-eliminate-adjacent-duplicates-in-a-string-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.5: Write an in-place function to eliminate adjacent duplicates in a []string slice.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-46-write-an-in-place-function-that-squashes-each-run-of-adjacent-unicode-spaces-see-unicodeisspace-in-a-utf-8-enco-ded-byte-slice-into-a-single-ascii-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.6: Write an in-place function that squashes each run of adjacent Unicode spaces (see unicode.IsSpace) in a UTF-8-enco ded []byte slice into a single ASCII space.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-47-modify-reverse-to-reverse-the-characters-of-a-byte-slice-that-represents-a-utf-8-encoded-string-in-place-can-you-do-it-without-allocat-ing-new-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.7: Modify reverse to reverse the characters of a []byte slice that represents a UTF-8-encoded string, in place. Can you do it without allocat ing new memory?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-48-modify-charcount-to-count-letters-digits-and-so-on-in-their-unicode-categories-using-functions-like-unicodeisletter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.8: Modify charcount to count letters, digits, and so on in their Unicode categories, using functions like unicode.IsLetter.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-49-write-a-program-wordfreq-to-rep-ort-the-frequency-of-each-word-in-an-input-text-file-call-inputsplitbufioscanwords-before-the-first-call-to-scan-to-break-the-input-into-words-instead-of-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.9: Write a program wordfreq to rep ort the frequency of each word in an input text file. Call input.Split(bufio.ScanWords) before the first call to Scan to break the input into words instead of lines.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-410-modify-issues-to-report-the-results-in-age-categories-say-less-than-a-month-old-less-than-a-year-old-and-more-than-a-year-old" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.10: Modify issues to report the results in age categories, say less than a month old, less than a year old, and more than a year old.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-411-build-a-tool-that-lets-users-create-read-update-and-close-github-issues-from-the-command-line-invoking-their-preferred-text-editor-when-subst-antial-text-input-is-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.11: Build a tool that lets users create, read, update, and close GitHub issues from the command line, invoking their preferred text editor when subst antial text input is required.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-412-the-popu-lar-web-comic-xkcd-has-a-json-interface-for-example-a-request-to-httpsxkcdcom571info0json-produces-a-detailed-description-of-comic-571-one-of-many-favorites-download-each-url-once-and-build-an-offline-index-write-a-tool-xkcd-that-using-this-index-prints-the-url-and-transcript-of-each-comic-that-matches-a-search-term-provided-on-the-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.12: The popu lar web comic xkcd has a JSON interface. For example, a request to https://xkcd.com/571/info.0.json produces a detailed description of comic 571, one of many favorites. Download each URL (once!) and build an offline index. Write a tool xkcd that, using this index, prints the URL and transcript of each comic that matches a search term provided on the command line.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-413-the-json-based-web-service-of-the-open-movie-databas-e-lets-you-search-httpsomdbapicom-for-a-movie-by-name-and-download-its-poster-image-write-a-tool-poster-that-downloads-the-poster-image-for-the-movie-named-on-the-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.13: The JSON-based web service of the Open Movie Databas e lets you search https://omdbapi.com/ for a movie by name and download its poster image. Write a tool poster that downloads the poster image for the movie named on the command line.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-414-create-a-web-server-that-quer-ies-github-once-and-then-allows-navigation-of-the-list-of-bug-rep-orts-milestones-and-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4.14: Create a web server that quer ies GitHub once and then allows navigation of the list of bug rep orts, milestones, and users.
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="the-go-programming-language-exercises-solutions">The GO Programming Language Exercises Solutions</h1>
+<h2 id="chapter-1">Chapter 1</h2>
+<h3 id="exercise-11-modif-y-the-echo-program-to-also-print-osargs0-the-name-of-the-command-that-invoked-it">Exercise 1.1 Modif y the echo program to also print os.Args[0], the name of the command that invoked it.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    for i, arg := range os.Args {
+        if i &gt; 0 {
+            fmt.Print(&quot; &quot;)
+        }
+        fmt.Print(arg)
+    }
+    fmt.Println()
+}
+</code></pre>
+<h3 id="exercise-12-modify-the-echo-program-to-print-the-index-and-value-of-each-of-its-arguments-one-per-line">Exercise 1.2 Modify the echo program to print the index and value of each of its arguments, one per line.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    for i, arg := range os.Args {
+        fmt.Println(i, arg)
+    }
+}
+</code></pre>
+<h3 id="exercise-13-exercise-13-experiment-to-measure-the-difference-in-running-time-between-our-potentially-inefficient-versions-and-the-one-that-uses-stringsjoin-section-16-illustrates-part-of-the-time-package-and-section-114-shows-how-to-write-benchmark-tests-for-systematic-per-formance-evaluation">Exercise 1.3 Exercise 1.3: Experiment to measure the difference in running time between our potentially inefficient versions and the one that uses strings.Join. (Section 1.6 illustrates part of the time package, and Section 11.4 shows how to write benchmark tests for systematic per- formance evaluation.)</h3>
+<pre><code class="language-go">package echo
+
+import (
+    &quot;os&quot;
+    &quot;strings&quot;
+    &quot;testing&quot;
+)
+
+func echoConcat() string {
+    s := &quot;&quot;
+    for _, arg := range os.Args[1:] {
+        s += arg
+    }
+    return s
+}
+
+func echoJoin() string {
+    return strings.Join(os.Args[1:], &quot;&quot;)
+}
+
+func BenchmarkEchoConcat(b *testing.B) {
+    for i := 0; i &lt; b.N; i++ {
+        _ = echoConcat()
+    }
+}
+
+func BenchmarkEchoJoin(b *testing.B) {
+    for i := 0; i &lt; b.N; i++ {
+        _ = echoJoin()
+    }
+}
+</code></pre>
+<h3 id="exercise-14-modif-y-dup2-to-print-the-names-of-all-files-in-which-each-duplicated-line-occurs">Exercise 1.4: Modif y dup2 to print the names of all files in which each duplicated line occurs.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;bufio&quot;
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    counts := make(map[string]int)
+    files := make(map[string]map[string]bool)
+
+    for _, name := range os.Args[1:] {
+        f, err := os.Open(name)
+        if err != nil {
+            continue
+        }
+        input := bufio.NewScanner(f)
+        for input.Scan() {
+            line := input.Text()
+            counts[line]++
+            if files[line] == nil {
+                files[line] = make(map[string]bool)
+            }
+            files[line][name] = true
+        }
+        f.Close()
+    }
+
+    for line, n := range counts {
+        if n &gt; 1 {
+            fmt.Print(n, &quot;\t&quot;, line)
+            for name := range files[line] {
+                fmt.Print(&quot;\t&quot;, name)
+            }
+            fmt.Println()
+        }
+    }
+}
+</code></pre>
+<h3 id="exercise-15-change-the-lissajous-programs-color-palette-to-green-on-black-for-added-authenticity-to-cre-ate-the-web-color-rrggbb-use-colorrgba0xrr-0xgg-0xbb-0xff-where-each-pair-of-hexadecimal-digits-represents-the-intensity-of-the-red-green-or-blue-component-of-the-pixel">Exercise 1.5: Change the Lissajous program’s color palette to green on black, for added authenticity. To cre ate the web color #RRGGBB, use color.RGBA{0xRR, 0xGG, 0xBB, 0xff}, where each pair of hexadecimal digits represents the intensity of the red, green, or blue component of the pixel.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+    &quot;image/gif&quot;
+    &quot;math&quot;
+    &quot;math/rand&quot;
+    &quot;os&quot;
+)
+
+var palette = []color.Color{
+    color.Black,
+    color.RGBA{255, 0, 0, 255},
+    color.RGBA{0, 255, 0, 255},
+    color.RGBA{0, 0, 255, 255},
+}
+
+const (
+    whiteIndex = 0
+)
+
+func main() {
+    const (
+        cycles  = 5
+        res     = 0.001
+        size    = 100
+        nframes = 64
+        delay   = 8
+    )
+
+    freq := rand.Float64() * 3.0
+    anim := gif.GIF{LoopCount: nframes}
+    phase := 0.0
+    for i := 0; i &lt; nframes; i++ {
+        rect := image.Rect(0, 0, 2*size+1, 2*size+1)
+        img := image.NewPaletted(rect, palette)
+        colorIndex := uint8(i%len(palette-1) + 1)
+        for t := 0.0; t &lt; cycles*2*math.Pi; t += res {
+            x := math.Sin(t)
+            y := math.Sin(t*freq + phase)
+            img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), colorIndex)
+        }
+        phase += 0.1
+        anim.Delay = append(anim.Delay, delay)
+        anim.Image = append(anim.Image, img)
+    }
+    gif.EncodeAll(os.Stdout, &amp;anim)
+}
+</code></pre>
+<h3 id="exercise-16-modify-the-lissajous-program-to-produce-images-in-multiple-colors-by-adding-more-values-to-palette-and-then-displaying-them-by-changing-the-third-argument-of-set-colorindex-in-some-interesting-way">Exercise 1.6: Modify the Lissajous program to produce images in multiple colors by adding more values to palette and then displaying them by changing the third argument of Set-ColorIndex in some interesting way.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math&quot;
+)
+
+const (
+    width, height = 600, 320
+    cells         = 100
+    xyrange       = 30.0
+)
+
+func main() {
+    fmt.Printf(&quot;&lt;svg xmlns='http://www.w3.org/2000/svg' style='stroke: grey; fill: white; stroke-width: 0.7' width='%d' height='%d'&gt;&quot;, width, height)
+    for i := 0; i &lt; cells; i++ {
+        for j := 0; j &lt; cells; j++ {
+            ax, ay := corner(i+1, j)
+            bx, by := corner(i, j)
+            cx, cy := corner(i, j+1)
+            dx, dy := corner(i+1, j+1)
+            z := f((float64(i)/cells-0.5)*2*xyrange, (float64(j)/cells-0.5)*2*xyrange)
+            color := &quot;blue&quot;
+            if z &gt; 0 {
+                color = &quot;red&quot;
+            }
+            fmt.Printf(&quot;&lt;polygon points='%g,%g %g,%g %g,%g %g,%g' style='fill:%s'/&gt;&quot;, ax, ay, bx, by, cx, cy, dx, dy, color)
+        }
+    }
+    fmt.Println(&quot;&lt;/svg&gt;&quot;)
+}
+
+func corner(i, j int) (float64, float64) {
+    x := xyrange * (float64(i)/cells - 0.5)
+    y := xyrange * (float64(j)/cells - 0.5)
+    z := f(x, y)
+    sx := width/2 + (x-y)*math.Cos(math.Pi/6)*width/xyrange/2
+    sy := height/2 + (x+y)*math.Sin(math.Pi/6)*width/xyrange/2 - z*height*0.4
+    return sx, sy
+}
+
+func f(x, y float64) float64 {
+    r := math.Hypot(x, y)
+    return math.Sin(r) / r
+}
+</code></pre>
+<h3 id="exercise-17-the-function-call-iocopydst-src-reads-from-src-and-writes-to-dst-use-it-instead-of-ioutilreadall-to-copy-the-response-body-to-osstdout-without-requiring-a-buffer-large-enough-to-hold-the-entire-stream-be-sure-to-check-the-error-result-of-iocopy">Exercise 1.7: The function call io.Copy(dst, src) reads from src and writes to dst. Use it instead of ioutil.ReadAll to copy the response body to os.Stdout without requiring a buffer large enough to hold the entire stream. Be sure to check the error result of io.Copy.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    resp, _ := http.Get(os.Args[1])
+    io.Copy(os.Stdout, resp.Body)
+    resp.Body.Close()
+}
+</code></pre>
+<h3 id="exercise-18-modify-fetch-to-add-the-prefix-http-to-each-argument-url-if-it-is-missing-you-might-want-to-use-stringshasprefix">Exercise 1.8: Modify fetch to add the prefix http:// to each argument URL if it is missing. You might want to use strings.HasPrefix.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+    &quot;strings&quot;
+)
+
+func main() {
+    url := os.Args[1]
+    if !strings.HasPrefix(url, &quot;http://&quot;) &amp;&amp; !strings.HasPrefix(url, &quot;https://&quot;) {
+        url = &quot;http://&quot; + url
+    }
+    resp, _ := http.Get(url)
+    io.Copy(os.Stdout, resp.Body)
+    resp.Body.Close()
+}
+</code></pre>
+<h3 id="exercise-19-modify-fetch-to-also-print-the-http-status-code-found-in-respstatus">Exercise 1.9: Modify fetch to also print the HTTP status code, found in resp.Status.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    resp, _ := http.Get(os.Args[1])
+    fmt.Println(resp.Status)
+    io.Copy(os.Stdout, resp.Body)
+    resp.Body.Close()
+}
+</code></pre>
+<h3 id="exercise-110-find-a-web-site-that-produces-a-large-amount-of-data-investigate-caching-by-running-fetchall-twice-in-succession-to-see-whether-the-reported-time-changes-much-do-you-get-the-same-content-each-time-modify-fetchall-to-print-its-output-to-a-file-so-it-can-be-examined">Exercise 1.10: Find a web site that produces a large amount of data. Investigate caching by running fetchall twice in succession to see whether the reported time changes much. Do you get the same content each time? Modify fetchall to print its output to a file so it can be examined.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+    &quot;time&quot;
+)
+
+func fetch(url string, ch chan&lt;- string) {
+    start := time.Now()
+    resp, _ := http.Get(url)
+    n, _ := io.Copy(io.Discard, resp.Body)
+    resp.Body.Close()
+    ch &lt;- fmt.Sprintf(&quot;%.2fs %7d %s&quot;, time.Since(start).Seconds(), n, url)
+}
+
+func main() {
+    start := time.Now()
+    ch := make(chan string)
+    for _, url := range os.Args[1:] {
+        go fetch(url, ch)
+    }
+    for range os.Args[1:] {
+        fmt.Println(&lt;-ch)
+    }
+    fmt.Printf(&quot;%.2fs elapsed\n&quot;, time.Since(start).Seconds())
+}
+</code></pre>
+<h3 id="exercise-111-try-fetchall-with-longer-argument-lists-such-as-samples-from-the-top-million-web-sites-available-at-alexacom-how-does-the-program-behave-if-a-web-site-just-doesnt-respond-section-89-describes-mechanisms-for-coping-in-such-cases">Exercise 1.11: Try fetchall with longer argument lists, such as samples from the top million web sites available at alexa.com. How does the program behave if a web site just doesn’t respond? (Section 8.9 describes mechanisms for coping in such cases.)</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+    &quot;time&quot;
+)
+
+func fetch(url string, ch chan&lt;- string) {
+    start := time.Now()
+    resp, err := http.Get(url)
+    if err != nil {
+        ch &lt;- err.Error()
+        return
+    }
+    n, _ := io.Copy(io.Discard, resp.Body)
+    resp.Body.Close()
+    ch &lt;- fmt.Sprintf(&quot;%.2fs %7d %s&quot;, time.Since(start).Seconds(), n, url)
+}
+
+func main() {
+    ch := make(chan string)
+    for _, url := range os.Args[1:] {
+        go fetch(url, ch)
+    }
+    for range os.Args[1:] {
+        fmt.Println(&lt;-ch)
+    }
+}
+</code></pre>
+<h3 id="exercise-12-modify-the-lissajous-server-to-read-parameter-values-from-the-url-for-example-you-mig-ht-arrange-it-so-that-a-url-like-httplocalhost8000cycles20-sets-the-number-of-cycles-to-20-instead-of-the-default-5-use-the-strconvatoi-func-tion-to-convert-the-string-parameter-into-an-integer-you-can-see-its-documentation-wit-h-go-doc-strconvatoi">Exercise 1.2: Modify the Lissajous server to read parameter values from the URL. For example, you mig ht arrange it so that a URL like http://localhost:8000/?cycles=20 sets the number of cycles to 20 instead of the default 5. Use the strconv.Atoi func tion to convert the string parameter into an integer. You can see its documentation wit h go doc strconv.Atoi.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+    &quot;image/gif&quot;
+    &quot;math&quot;
+    &quot;math/rand&quot;
+    &quot;net/http&quot;
+)
+
+var palette = []color.Color{color.White, color.Black}
+
+func lissajous(w http.ResponseWriter) {
+    const (
+        cycles  = 5
+        res     = 0.001
+        size    = 100
+        nframes = 64
+        delay   = 8
+    )
+    freq := rand.Float64() * 3.0
+    anim := gif.GIF{LoopCount: nframes}
+    phase := 0.0
+    for i := 0; i &lt; nframes; i++ {
+        rect := image.Rect(0, 0, 2*size+1, 2*size+1)
+        img := image.NewPaletted(rect, palette)
+        for t := 0.0; t &lt; cycles*2*math.Pi; t += res {
+            x := math.Sin(t)
+            y := math.Sin(t*freq + phase)
+            img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), 1)
+        }
+        phase += 0.1
+        anim.Delay = append(anim.Delay, delay)
+        anim.Image = append(anim.Image, img)
+    }
+    gif.EncodeAll(w, &amp;anim)
+}
+
+func main() {
+    http.HandleFunc(&quot;/&quot;, func(w http.ResponseWriter, r *http.Request) {
+        lissajous(w)
+    })
+    http.ListenAndServe(&quot;:8000&quot;, nil)
+}
+</code></pre>
+<h2 id="chapter-2">Chapter 2</h2>
+<h3 id="exercise-21-add-types-constants-and-functions-to-tempconv-for-processing-temperatures-in-the-kelvin-scale-where-zero-kelvin-is-27315c-and-a-difference-of-1k-has-the-same-magnitude-as-1c">Exercise 2.1: Add types, constants, and functions to tempconv for processing temperatures in the Kelvin scale, where zero Kelvin is −273.15°C and a difference of 1K has the same magnitude as 1°C.</h3>
+<pre><code class="language-go">package tempconv
+
+type Kelvin float64
+
+const AbsoluteZeroC Celsius = -273.15
+
+func CToK(c Celsius) Kelvin {
+    return Kelvin(c - AbsoluteZeroC)
+}
+
+func KToC(k Kelvin) Celsius {
+    return Celsius(k) + AbsoluteZeroC
+}
+
+func FToK(f Fahrenheit) Kelvin {
+    return CToK(FToC(f))
+}
+
+func KToF(k Kelvin) Fahrenheit {
+    return CToF(KToC(k))
+}
+</code></pre>
+<h3 id="exercise-22-write-a-general-purpose-unit-conversion-program-analogous-to-cf-that-reads-numbers-from-its-command-line-arguments-or-from-the-standard-input-if-there-are-no-arguments-and-converts-each-number-into-units-like-temperature-in-celsius-and-fahren-heit-length-in-feet-and-meters-weig-ht-in-pounds-and-kilograms-and-the-like">Exercise 2.2: Write a general-purpose unit-conversion program analogous to cf that reads numbers from its command-line arguments or from the standard input if there are no arguments, and converts each number into units like temperature in Celsius and Fahren heit, length in feet and meters, weig ht in pounds and kilograms, and the like.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;bufio&quot;
+    &quot;fmt&quot;
+    &quot;os&quot;
+    &quot;strconv&quot;
+)
+
+type Celsius float64
+type Fahrenheit float64
+type Feet float64
+type Meters float64
+type Pounds float64
+type Kilograms float64
+
+func CToF(c Celsius) Fahrenheit { return Fahrenheit(c*9/5 + 32) }
+func FToC(f Fahrenheit) Celsius { return Celsius((f - 32) * 5 / 9) }
+
+func FtToM(f Feet) Meters       { return Meters(f * 0.3048) }
+func MToFt(m Meters) Feet       { return Feet(m / 0.3048) }
+
+func LbToKg(p Pounds) Kilograms { return Kilograms(p * 0.45359237) }
+func KgToLb(k Kilograms) Pounds { return Pounds(k / 0.45359237) }
+
+func convert(v float64) {
+    c := Celsius(v)
+    f := Fahrenheit(v)
+    ft := Feet(v)
+    m := Meters(v)
+    lb := Pounds(v)
+    kg := Kilograms(v)
+
+    fmt.Printf(&quot;%g°C = %g°F, %g°F = %g°C\n&quot;, c, CToF(c), f, FToC(f))
+    fmt.Printf(&quot;%gft = %gm, %gm = %gft\n&quot;, ft, FtToM(ft), m, MToFt(m))
+    fmt.Printf(&quot;%glb = %gkg, %gkg = %glb\n&quot;, lb, LbToKg(lb), kg, KgToLb(kg))
+}
+
+func main() {
+    if len(os.Args) &gt; 1 {
+        for _, arg := range os.Args[1:] {
+            v, err := strconv.ParseFloat(arg, 64)
+            if err != nil {
+                continue
+            }
+            convert(v)
+        }
+        return
+    }
+
+    in := bufio.NewScanner(os.Stdin)
+    for in.Scan() {
+        v, err := strconv.ParseFloat(in.Text(), 64)
+        if err != nil {
+            continue
+        }
+        convert(v)
+    }
+}
+</code></pre>
+<h3 id="exercise-23-rewrite-popcount-to-use-a-loop-instead-of-a-single-expression-compare-the-performance-of-the-two-versions-section-114-shows-how-to-compare-the-per-formance-of-different-implementations-systematically">Exercise 2.3: Rewrite PopCount to use a loop instead of a single expression. Compare the performance of the two versions. (Section 11.4 shows how to compare the per formance of different implementations systematically.)</h3>
+<pre><code class="language-go">package popcount
+
+var pc [256]byte
+
+func init() {
+    for i := range pc {
+        pc[i] = pc[i/2] + byte(i&amp;1)
+    }
+}
+
+func PopCountExpr(x uint64) int {
+    return int(pc[byte(x&gt;&gt;(0*8))] +
+        pc[byte(x&gt;&gt;(1*8))] +
+        pc[byte(x&gt;&gt;(2*8))] +
+        pc[byte(x&gt;&gt;(3*8))] +
+        pc[byte(x&gt;&gt;(4*8))] +
+        pc[byte(x&gt;&gt;(5*8))] +
+        pc[byte(x&gt;&gt;(6*8))] +
+        pc[byte(x&gt;&gt;(7*8))])
+}
+
+func PopCountLoop(x uint64) int {
+    n := 0
+    for i := 0; i &lt; 8; i++ {
+        n += int(pc[byte(x&gt;&gt;(i*8))])
+    }
+    return n
+}
+</code></pre>
+<h3 id="exercise-24-write-a-version-of-popcount-that-counts-bits-by-shifting-its-argument-through-64-bit-positions-testing-the-rightmost-bit-each-time-compare-its-performance-to-the-table-lookup-version">Exercise 2.4: Write a version of PopCount that counts bits by shifting its argument through 64 bit positions, testing the rightmost bit each time. Compare its performance to the table-lookup version.</h3>
+<pre><code class="language-go">package popcount
+
+func PopCountShift(x uint64) int {
+    n := 0
+    for i := 0; i &lt; 64; i++ {
+        if x&amp;1 == 1 {
+            n++
+        }
+        x &gt;&gt;= 1
+    }
+    return n
+}
+</code></pre>
+<h2 id="exercise-25-the-expression-xx-1-clears-the-rightmost-non-zero-bit-of-x-write-a-version-of-popcount-that-counts-bits-by-using-this-fact-and-assess-its-performance">Exercise 2.5: The expression x&amp;(x-1) clears the rightmost non-zero bit of x. Write a version of PopCount that counts bits by using this fact, and assess its performance.</h2>
+<pre><code class="language-go">package popcount
+
+func PopCountClear(x uint64) int {
+    n := 0
+    for x != 0 {
+        x &amp;= x - 1
+        n++
+    }
+    return n
+}
+</code></pre>
+<h2 id="chaper-3">Chaper 3</h2>
+<h3 id="exercise-31-if-the-function-f-returns-a-non-finite-float64-value-the-svg-file-will-contain-invalid-elements-although-many-svg-renderers-handle-this-gracefully-modify-the-program-to-skip-invalid-polygons">Exercise 3.1: If the function f returns a non-finite float64 value, the SVG file will contain invalid <polygon> elements (although many SVG renderers handle this gracefully). Modify the program to skip invalid polygons.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math&quot;
+)
+
+const (
+    width, height = 600, 320
+    cells         = 100
+    xyrange       = 30.0
+)
+
+func main() {
+    fmt.Printf(&quot;&lt;svg xmlns='http://www.w3.org/2000/svg' width='%d' height='%d'&gt;&quot;, width, height)
+    for i := 0; i &lt; cells; i++ {
+        for j := 0; j &lt; cells; j++ {
+            ax, ay, ok1 := corner(i+1, j)
+            bx, by, ok2 := corner(i, j)
+            cx, cy, ok3 := corner(i, j+1)
+            dx, dy, ok4 := corner(i+1, j+1)
+            if !(ok1 &amp;&amp; ok2 &amp;&amp; ok3 &amp;&amp; ok4) {
+                continue
+            }
+            fmt.Printf(&quot;&lt;polygon points='%g,%g %g,%g %g,%g %g,%g'/&gt;&quot;, ax, ay, bx, by, cx, cy, dx, dy)
+        }
+    }
+    fmt.Println(&quot;&lt;/svg&gt;&quot;)
+}
+
+func corner(i, j int) (float64, float64, bool) {
+    x := xyrange * (float64(i)/cells - 0.5)
+    y := xyrange * (float64(j)/cells - 0.5)
+    z := f(x, y)
+    if math.IsNaN(z) || math.IsInf(z, 0) {
+        return 0, 0, false
+    }
+    sx := width/2 + (x-y)*math.Cos(math.Pi/6)*width/xyrange/2
+    sy := height/2 + (x+y)*math.Sin(math.Pi/6)*width/xyrange/2 - z*height*0.4
+    if math.IsNaN(sx) || math.IsNaN(sy) || math.IsInf(sx, 0) || math.IsInf(sy, 0) {
+        return 0, 0, false
+    }
+    return sx, sy, true
+}
+
+func f(x, y float64) float64 {
+    r := math.Hypot(x, y)
+    return math.Sin(r) / r
+}
+</code></pre>
+<h3 id="exercise-32-experiment-with-visualizations-of-other-functions-fro-m-the-math-package-can-you-produce-an-egg-box-moguls-or-a-saddle">Exercise 3.2: Experiment with visualizations of other functions fro m the math package. Can you produce an egg box, moguls, or a saddle?</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math&quot;
+)
+
+const (
+    width, height = 600, 320
+    cells         = 100
+    xyrange       = 30.0
+    xyscale       = width / 2 / xyrange
+    zscale        = height * 0.4
+    angle         = math.Pi / 6
+)
+
+var sin30, cos30 = math.Sin(angle), math.Cos(angle)
+
+func main() {
+    fmt.Printf(&quot;&lt;svg xmlns='http://www.w3.org/2000/svg' &quot;+
+        &quot;style='stroke: grey; fill: white; stroke-width: 0.7' &quot;+
+        &quot;width='%d' height='%d'&gt;&quot;, width, height)
+    for i := 0; i &lt; cells; i++ {
+        for j := 0; j &lt; cells; j++ {
+            ax, ay, ok1 := corner(i+1, j)
+            bx, by, ok2 := corner(i, j)
+            cx, cy, ok3 := corner(i, j+1)
+            dx, dy, ok4 := corner(i+1, j+1)
+
+            if !ok1 || !ok2 || !ok3 || !ok4 {
+                continue
+            }
+
+            fmt.Printf(&quot;&lt;polygon points='%g,%g %g,%g %g,%g %g,%g'/&gt;\n&quot;,
+                ax, ay, bx, by, cx, cy, dx, dy)
+        }
+    }
+    fmt.Println(&quot;&lt;/svg&gt;&quot;)
+}
+
+func corner(i, j int) (float64, float64, bool) {
+    x := xyrange * (float64(i)/cells - 0.5)
+    y := xyrange * (float64(j)/cells - 0.5)
+
+    z := f(x, y)
+
+    if !math.IsFinite(z) {
+        return 0, 0, false
+    }
+
+    sx := width/2 + (x-y)*cos30*xyscale
+    sy := height/2 + (x+y)*sin30*xyscale - z*zscale
+
+    if !math.IsFinite(sx) || !math.IsFinite(sy) {
+        return 0, 0, false
+    }
+
+    return sx, sy, true
+}
+
+func eggBox(x, y float64) float64 {
+    return math.Sin(x) + math.Sin(y)
+}
+
+func moguls(x, y float64) float64 {
+    return math.Sin(x) * math.Cos(y) * 10
+}
+
+func saddle(x, y float64) float64 {
+    return (x*x - y*y) / 300
+}
+
+// Use one of the above functions
+func f(x, y float64) float64 {
+    return saddle(x, y)
+}
+</code></pre>
+<h3 id="exercise-33-color-each-polygon-based-on-its-height-so-that-the-peaks-are-colored-redff0000-and-the-val-leys-blue-0000ff">Exercise 3.3: Color each polygon based on its height, so that the peaks are colored red(#ff0000) and the val leys blue (#0000ff).</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math&quot;
+)
+
+const (
+    width, height = 600, 320
+    cells         = 100
+    xyrange       = 30.0
+    xyscale       = width / 2 / xyrange
+    zscale        = height * 0.4
+    angle         = math.Pi / 6
+)
+
+var sin30, cos30 = math.Sin(angle), math.Cos(angle)
+
+func main() {
+    fmt.Printf(&quot;&lt;svg xmlns='http://www.w3.org/2000/svg' &quot;+
+        &quot;style='stroke: grey; stroke-width: 0.7' &quot;+
+        &quot;width='%d' height='%d'&gt;&quot;, width, height)
+    for i := 0; i &lt; cells; i++ {
+        for j := 0; j &lt; cells; j++ {
+            ax, ay, az, ok1 := corner(i+1, j)
+            bx, by, bz, ok2 := corner(i, j)
+            cx, cy, cz, ok3 := corner(i, j+1)
+            dx, dy, dz, ok4 := corner(i+1, j+1)
+
+            if !ok1 || !ok2 || !ok3 || !ok4 {
+                continue
+            }
+
+            // Calculate average height of the polygon
+            avgZ := (az + bz + cz + dz) / 4
+            color := getColor(avgZ)
+
+            fmt.Printf(&quot;&lt;polygon points='%g,%g %g,%g %g,%g %g,%g' fill='%s'/&gt;\n&quot;,
+                ax, ay, bx, by, cx, cy, dx, dy, color)
+        }
+    }
+    fmt.Println(&quot;&lt;/svg&gt;&quot;)
+}
+
+func corner(i, j int) (float64, float64, float64, bool) {
+    x := xyrange * (float64(i)/cells - 0.5)
+    y := xyrange * (float64(j)/cells - 0.5)
+
+    z := f(x, y)
+
+    if !math.IsFinite(z) {
+        return 0, 0, 0, false
+    }
+
+    sx := width/2 + (x-y)*cos30*xyscale
+    sy := height/2 + (x+y)*sin30*xyscale - z*zscale
+
+    if !math.IsFinite(sx) || !math.IsFinite(sy) {
+        return 0, 0, 0, false
+    }
+
+    return sx, sy, z, true
+}
+
+func getColor(z float64) string {
+    min, max := -1.0, 1.0
+    normalized := (z - min) / (max - min)
+
+    if normalized &lt; 0 {
+        normalized = 0
+    }
+    if normalized &gt; 1 {
+        normalized = 1
+    }
+
+    red := int(normalized * 255)
+    blue := int((1 - normalized) * 255)
+
+    return fmt.Sprintf(&quot;#%02x00%02x&quot;, red, blue)
+}
+
+func f(x, y float64) float64 {
+    r := math.Hypot(x, y)
+    return math.Sin(r) / r
+}
+</code></pre>
+<h3 id="exercise-34-following-the-approach-of-the-lissajous-example-in-section-17-construct-a-web-server-that-computes-surfaces-and-writes-svg-data-to-the-client-the-server-must-set-the-content-type-header-like-this-wheadersetcontent-type-imagesvgxml">Exercise 3.4: Following the approach of the Lissajous example in Section 1.7, construct a web server that computes surfaces and writes SVG data to the client. The server must set the Content-Type header like this: <code>w.Header().Set("Content-Type", "image/svg+xml")</code></h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;log&quot;
+    &quot;math&quot;
+    &quot;net/http&quot;
+)
+
+const (
+    width, height = 600, 320
+    cells         = 100
+    xyrange       = 30.0
+    xyscale       = width / 2 / xyrange
+    zscale        = height * 0.4
+    angle         = math.Pi / 6
+)
+
+var sin30, cos30 = math.Sin(angle), math.Cos(angle)
+
+func main() {
+    http.HandleFunc(&quot;/&quot;, handler)
+    log.Fatal(http.ListenAndServe(&quot;localhost:8000&quot;, nil))
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set(&quot;Content-Type&quot;, &quot;image/svg+xml&quot;)
+    fmt.Fprintf(w, &quot;&lt;svg xmlns='http://www.w3.org/2000/svg' &quot;+
+        &quot;style='stroke: grey; fill: white; stroke-width: 0.7' &quot;+
+        &quot;width='%d' height='%d'&gt;&quot;, width, height)
+    for i := 0; i &lt; cells; i++ {
+        for j := 0; j &lt; cells; j++ {
+            ax, ay, ok1 := corner(i+1, j)
+            bx, by, ok2 := corner(i, j)
+            cx, cy, ok3 := corner(i, j+1)
+            dx, dy, ok4 := corner(i+1, j+1)
+
+            if !ok1 || !ok2 || !ok3 || !ok4 {
+                continue
+            }
+
+            fmt.Fprintf(w, &quot;&lt;polygon points='%g,%g %g,%g %g,%g %g,%g'/&gt;\n&quot;,
+                ax, ay, bx, by, cx, cy, dx, dy)
+        }
+    }
+    fmt.Fprintln(w, &quot;&lt;/svg&gt;&quot;)
+}
+
+func corner(i, j int) (float64, float64, bool) {
+    x := xyrange * (float64(i)/cells - 0.5)
+    y := xyrange * (float64(j)/cells - 0.5)
+
+    z := f(x, y)
+
+    if !math.IsFinite(z) {
+        return 0, 0, false
+    }
+
+    sx := width/2 + (x-y)*cos30*xyscale
+    sy := height/2 + (x+y)*sin30*xyscale - z*zscale
+
+    if !math.IsFinite(sx) || !math.IsFinite(sy) {
+        return 0, 0, false
+    }
+
+    return sx, sy, true
+}
+
+func f(x, y float64) float64 {
+    r := math.Hypot(x, y)
+    return math.Sin(r) / r
+}
+</code></pre>
+<h3 id="exercise-35-implement-a-full-color-mandelbrot-set-using-the-function-imagenewrgba-and-the-type-colorrgba-or-colorycbcr">Exercise 3.5: Implement a full-color Mandelbrot set using the function image.NewRGBA and the type color.RGBA or color.YCbCr.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+    &quot;image/png&quot;
+    &quot;math/cmplx&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    const (
+        xmin, ymin, xmax, ymax = -2, -2, +2, +2
+        width, height          = 1024, 1024
+    )
+
+    img := image.NewRGBA(image.Rect(0, 0, width, height))
+    for py := 0; py &lt; height; py++ {
+        y := float64(py)/height*(ymax-ymin) + ymin
+        for px := 0; px &lt; width; px++ {
+            x := float64(px)/width*(xmax-xmin) + xmin
+            z := complex(x, y)
+            img.Set(px, py, mandelbrot(z))
+        }
+    }
+    png.Encode(os.Stdout, img)
+}
+
+func mandelbrot(z complex128) color.Color {
+    const iterations = 200
+    const contrast = 15
+
+    var v complex128
+    for n := uint8(0); n &lt; iterations; n++ {
+        v = v*v + z
+        if cmplx.Abs(v) &gt; 2 {
+            // Create colorful gradient based on iteration count
+            return color.RGBA{
+                R: 255 - contrast*n,
+                G: contrast * n,
+                B: 128 + contrast*n/2,
+                A: 255,
+            }
+        }
+    }
+    return color.Black
+}
+</code></pre>
+<h3 id="exercise-36-supersampling-is-a-technique-to-reduce-the-effect-of-pixelation-by-computing-the-color-value-at-several-points-wit-hin-each-pixel-and-taking-the-average-the-simplest-method-is-to-divide-each-pixel-into-four-subpixels-implement-it">Exercise 3.6: Supersampling is a technique to reduce the effect of pixelation by computing the color value at several points wit hin each pixel and taking the average. The simplest method is to divide each pixel into four ‘‘subpixels. ’’ Implement it.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+    &quot;image/png&quot;
+    &quot;math/cmplx&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    const (
+        xmin, ymin, xmax, ymax = -2, -2, +2, +2
+        width, height          = 1024, 1024
+    )
+
+    img := image.NewRGBA(image.Rect(0, 0, width, height))
+    for py := 0; py &lt; height; py++ {
+        y := float64(py)/height*(ymax-ymin) + ymin
+        for px := 0; px &lt; width; px++ {
+            x := float64(px)/width*(xmax-xmin) + xmin
+            img.Set(px, py, supersample(x, y, width, height, xmin, xmax, ymin, ymax))
+        }
+    }
+    png.Encode(os.Stdout, img)
+}
+
+func supersample(x, y float64, width, height int, xmin, xmax, ymin, ymax float64) color.Color {
+    offsets := []float64{-0.25, 0.25}
+    var r, g, b, a uint32
+
+    dx := (xmax - xmin) / float64(width)
+    dy := (ymax - ymin) / float64(height)
+
+    for _, ox := range offsets {
+        for _, oy := range offsets {
+            z := complex(x+ox*dx, y+oy*dy)
+            c := mandelbrot(z)
+            r1, g1, b1, a1 := c.RGBA()
+            r += r1
+            g += g1
+            b += b1
+            a += a1
+        }
+    }
+
+    return color.RGBA{
+        R: uint8(r / 4 / 257),
+        G: uint8(g / 4 / 257),
+        B: uint8(b / 4 / 257),
+        A: uint8(a / 4 / 257),
+    }
+}
+
+func mandelbrot(z complex128) color.Color {
+    const iterations = 200
+    const contrast = 15
+
+    var v complex128
+    for n := uint8(0); n &lt; iterations; n++ {
+        v = v*v + z
+        if cmplx.Abs(v) &gt; 2 {
+            return color.RGBA{
+                R: 255 - contrast*n,
+                G: contrast * n,
+                B: 128 + contrast*n/2,
+                A: 255,
+            }
+        }
+    }
+    return color.Black
+}
+</code></pre>
+<h3 id="exercise-37-another-simple-fractal-uses-newtons-method-to-find-complex-solutions-to-a-function-such-as-z41-0-shade-each-starting-point-by-the-number-of-iterations-required-to-et-close-to-one-of-the-four-roots-color-each-point-by-the-root-it-approaches">Exercise 3.7: Another simple fractal uses Newton’s method to find complex solutions to a function such as z4−1 = 0. Shade each starting point by the number of iterations required to et close to one of the four roots. Color each point by the root it approaches.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+    &quot;image/png&quot;
+    &quot;math/cmplx&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    const (
+        xmin, ymin, xmax, ymax = -2, -2, +2, +2
+        width, height          = 1024, 1024
+    )
+
+    img := image.NewRGBA(image.Rect(0, 0, width, height))
+    for py := 0; py &lt; height; py++ {
+        y := float64(py)/height*(ymax-ymin) + ymin
+        for px := 0; px &lt; width; px++ {
+            x := float64(px)/width*(xmax-xmin) + xmin
+            z := complex(x, y)
+            img.Set(px, py, newton(z))
+        }
+    }
+    png.Encode(os.Stdout, img)
+}
+
+func f(z complex128) complex128 {
+    return z*z*z*z - 1
+}
+
+func fPrime(z complex128) complex128 {
+    return 4 * z * z * z
+}
+
+func newton(z complex128) color.Color {
+    const iterations = 50
+    const tolerance = 1e-6
+
+    roots := []complex128{
+        complex(1, 0),
+        complex(-1, 0),
+        complex(0, 1),
+        complex(0, -1),
+    }
+
+    colors := []color.RGBA{
+        {255, 0, 0, 255},   // Red
+        {0, 255, 0, 255},   // Green
+        {0, 0, 255, 255},   // Blue
+        {255, 255, 0, 255}, // Yellow
+    }
+
+    for n := 0; n &lt; iterations; n++ {
+        z = z - f(z)/fPrime(z)
+
+        for i, root := range roots {
+            if cmplx.Abs(z-root) &lt; tolerance {
+                shade := uint8(255 - (255 * n / iterations))
+                c := colors[i]
+                return color.RGBA{
+                    R: uint8(int(c.R) * int(shade) / 255),
+                    G: uint8(int(c.G) * int(shade) / 255),
+                    B: uint8(int(c.B) * int(shade) / 255),
+                    A: 255,
+                }
+            }
+        }
+    }
+
+    return color.Black
+}
+</code></pre>
+<h3 id="exercise-38-render-ing-fractals-at-high-zoom-levels-demands-great-arithmetic-precision-implement-the-same-fractal-using-four-different-representations-of-numbers-complex64-complex128-bigfloat-and-bigrat-the-latter-two-types-are-found-in-the-mathbig-package-float-uses-arbitrary-but-bounded-precision-floating-point-rat-uses-unbounded-precision-rational-numbers-how-do-they-comp-are-in-performance-and-memory-usage-at-what-zoom-levels-do-render-ing-artifacts-become-visible">Exercise 3.8: Render ing fractals at high zoom levels demands great arithmetic precision. Implement the same fractal using four different representations of numbers: complex64, complex128, big.Float, and big.Rat. (The latter two types are found in the math/big package. Float uses arbitrary but bounded-precision floating-point; Rat uses unbounded-precision rational numbers.) How do they comp are in performance and memory usage? At what zoom levels do render ing artifacts become visible?</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+    &quot;image/png&quot;
+    &quot;math/big&quot;
+    &quot;math/cmplx&quot;
+    &quot;os&quot;
+)
+
+func mandelbrot64(z complex64) color.Color {
+    const iterations = 200
+    const contrast = 15
+
+    var v complex64
+    for n := uint8(0); n &lt; iterations; n++ {
+        v = v*v + z
+        if real(v)*real(v)+imag(v)*imag(v) &gt; 4 {
+            return color.Gray{255 - contrast*n}
+        }
+    }
+    return color.Black
+}
+
+func mandelbrot128(z complex128) color.Color {
+    const iterations = 200
+    const contrast = 15
+
+    var v complex128
+    for n := uint8(0); n &lt; iterations; n++ {
+        v = v*v + z
+        if cmplx.Abs(v) &gt; 2 {
+            return color.Gray{255 - contrast*n}
+        }
+    }
+    return color.Black
+}
+
+func mandelbrotBigFloat(zReal, zImag *big.Float) color.Color {
+    const iterations = 200
+    const contrast = 15
+
+    vReal := new(big.Float)
+    vImag := new(big.Float)
+
+    two := big.NewFloat(2)
+    four := big.NewFloat(4)
+
+    for n := uint8(0); n &lt; iterations; n++ {
+        vReal2 := new(big.Float).Mul(vReal, vReal)
+        vImag2 := new(big.Float).Mul(vImag, vImag)
+
+        newVReal := new(big.Float).Sub(vReal2, vImag2)
+        newVReal.Add(newVReal, zReal)
+
+        newVImag := new(big.Float).Mul(vReal, vImag)
+        newVImag.Mul(newVImag, two)
+        newVImag.Add(newVImag, zImag)
+
+        vReal = newVReal
+        vImag = newVImag
+
+        absSquared := new(big.Float).Add(vReal2, vImag2)
+        if absSquared.Cmp(four) &gt; 0 {
+            return color.Gray{255 - contrast*n}
+        }
+    }
+    return color.Black
+}
+
+func mandelbrotBigRat(zReal, zImag *big.Rat) color.Color {
+    const iterations = 200
+    const contrast = 15
+
+    vReal := new(big.Rat)
+    vImag := new(big.Rat)
+
+    four := big.NewRat(4, 1)
+    two := big.NewRat(2, 1)
+
+    for n := uint8(0); n &lt; iterations; n++ {
+        vReal2 := new(big.Rat).Mul(vReal, vReal)
+        vImag2 := new(big.Rat).Mul(vImag, vImag)
+
+        newVReal := new(big.Rat).Sub(vReal2, vImag2)
+        newVReal.Add(newVReal, zReal)
+
+        newVImag := new(big.Rat).Mul(vReal, vImag)
+        newVImag.Mul(newVImag, two)
+        newVImag.Add(newVImag, zImag)
+
+        vReal = newVReal
+        vImag = newVImag
+
+        absSquared := new(big.Rat).Add(vReal2, vImag2)
+        if absSquared.Cmp(four) &gt; 0 {
+            return color.Gray{255 - contrast*n}
+        }
+    }
+    return color.Black
+}
+
+func main() {
+    const (
+        xmin, ymin, xmax, ymax = -2, -2, +2, +2
+        width, height          = 1024, 1024
+    )
+
+    img := image.NewRGBA(image.Rect(0, 0, width, height))
+    for py := 0; py &lt; height; py++ {
+        y := float64(py)/height*(ymax-ymin) + ymin
+        for px := 0; px &lt; width; px++ {
+            x := float64(px)/width*(xmax-xmin) + xmin
+            z := complex(x, y)
+            img.Set(px, py, mandelbrot128(z))
+        }
+    }
+    png.Encode(os.Stdout, img)
+}
+</code></pre>
+<h3 id="exercise-39-write-a-web-server-that-renders-fractals-and-writes-the-image-data-to-the-client-allow-the-client-to-specify-the-x-y-and-zoom-values-as-parameters-to-the-http-request">Exercise 3.9: Write a web server that renders fractals and writes the image data to the client. Allow the client to specify the x, y, and zoom values as parameters to the HTTP request.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;image&quot;
+    &quot;image/color&quot;
+    &quot;image/png&quot;
+    &quot;log&quot;
+    &quot;math/cmplx&quot;
+    &quot;net/http&quot;
+    &quot;strconv&quot;
+)
+
+func main() {
+    http.HandleFunc(&quot;/&quot;, handler)
+    log.Fatal(http.ListenAndServe(&quot;localhost:8000&quot;, nil))
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    x, _ := strconv.ParseFloat(r.URL.Query().Get(&quot;x&quot;), 64)
+    y, _ := strconv.ParseFloat(r.URL.Query().Get(&quot;y&quot;), 64)
+    zoom, _ := strconv.ParseFloat(r.URL.Query().Get(&quot;zoom&quot;), 64)
+
+    if zoom == 0 {
+        zoom = 1
+    }
+
+    const (
+        width, height = 1024, 1024
+    )
+
+    scale := 4.0 / zoom
+    xmin := x - scale/2
+    xmax := x + scale/2
+    ymin := y - scale/2
+    ymax := y + scale/2
+
+    img := image.NewRGBA(image.Rect(0, 0, width, height))
+    for py := 0; py &lt; height; py++ {
+        yCoord := float64(py)/height*(ymax-ymin) + ymin
+        for px := 0; px &lt; width; px++ {
+            xCoord := float64(px)/width*(xmax-xmin) + xmin
+            z := complex(xCoord, yCoord)
+            img.Set(px, py, mandelbrot(z))
+        }
+    }
+
+    w.Header().Set(&quot;Content-Type&quot;, &quot;image/png&quot;)
+    png.Encode(w, img)
+}
+
+func mandelbrot(z complex128) color.Color {
+    const iterations = 200
+    const contrast = 15
+
+    var v complex128
+    for n := uint8(0); n &lt; iterations; n++ {
+        v = v*v + z
+        if cmplx.Abs(v) &gt; 2 {
+            return color.Gray{255 - contrast*n}
+        }
+    }
+    return color.Black
+}
+</code></pre>
+<h3 id="exercise-310-write-a-non-rec-ursive-version-of-comma-using-bytesbuffer-instead-of-string-concatenation">Exercise 3.10: Write a non-rec ursive version of comma, using bytes.Buffer instead of string concatenation.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;bytes&quot;
+    &quot;fmt&quot;
+)
+
+func comma(s string) string {
+    var buf bytes.Buffer
+    n := len(s)
+
+    prefix := n % 3
+    if prefix == 0 {
+        prefix = 3
+    }
+
+    buf.WriteString(s[:prefix])
+
+    for i := prefix; i &lt; n; i += 3 {
+        buf.WriteByte(',')
+        buf.WriteString(s[i : i+3])
+    }
+
+    return buf.String()
+}
+</code></pre>
+<h3 id="exercise-311-enhance-comma-so-that-it-deals-correctly-with-floating-point-numbers-and-an-optional-sign">Exercise 3.11: Enhance comma so that it deals correctly with floating-point numbers and an optional sign.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;bytes&quot;
+    &quot;fmt&quot;
+    &quot;strings&quot;
+)
+
+func comma(s string) string {
+    var buf bytes.Buffer
+
+    start := 0
+    if s[0] == '+' || s[0] == '-' {
+        buf.WriteByte(s[0])
+        start = 1
+    }
+
+    parts := strings.Split(s[start:], &quot;.&quot;)
+    intPart := parts[0]
+
+    n := len(intPart)
+    prefix := n % 3
+    if prefix == 0 &amp;&amp; n &gt; 0 {
+        prefix = 3
+    }
+
+    if prefix &gt; 0 {
+        buf.WriteString(intPart[:prefix])
+    }
+
+    for i := prefix; i &lt; n; i += 3 {
+        if i &gt; 0 {
+            buf.WriteByte(',')
+        }
+        buf.WriteString(intPart[i : i+3])
+    }
+
+    if len(parts) &gt; 1 {
+        buf.WriteByte('.')
+        buf.WriteString(parts[1])
+    }
+
+    return buf.String()
+}
+</code></pre>
+<h3 id="exercise-312-write-a-function-that-rep-orts-whether-two-strings-are-anagrams-of-each-other-that-is-they-contain-the-same-letters-in-a-different-order">Exercise 3.12: Write a function that rep orts whether two strings are anagrams of each other, that is, they contain the same letters in a different order.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+)
+
+func areAnagrams(s1, s2 string) bool {
+    if len(s1) != len(s2) {
+        return false
+    }
+
+    counts := make(map[rune]int)
+
+    for _, r := range s1 {
+        counts[r]++
+    }
+
+    for _, r := range s2 {
+        counts[r]--
+        if counts[r] &lt; 0 {
+            return false
+        }
+    }
+
+    for _, count := range counts {
+        if count != 0 {
+            return false
+        }
+    }
+
+    return true
+}
+</code></pre>
+<h3 id="exercise-313-write-const-declarations-for-kb-mb-up-through-yb-as-compactly-as-you-can">Exercise 3.13: Write const declarations for KB, MB, up through YB as compactly as you can.</h3>
+<pre><code class="language-go">package main
+
+const (
+    KB = 1000
+    MB = KB * 1000
+    GB = MB * 1000
+    TB = GB * 1000
+    PB = TB * 1000
+    EB = PB * 1000
+    ZB = EB * 1000
+    YB = ZB * 1000
+)
+
+const (
+    _ = 1 &lt;&lt; (10 * iota)
+    KiB
+    MiB
+    GiB
+    TiB
+    PiB
+    EiB
+    ZiB
+    YiB
+)
+</code></pre>
+<h2 id="chapter-4">Chapter 4</h2>
+<h3 id="exercise-41-write-a-function-that-counts-the-number-of-bits-that-are-different-in-two-sha256-hashes-see-popcount-from-section-262">Exercise 4.1: Write a function that counts the number of bits that are different in two SHA256 hashes. (See PopCount from Section 2.6.2.)</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;crypto/sha256&quot;
+    &quot;fmt&quot;
+)
+
+func hammingDistance(hash1, hash2 [32]byte) int {
+    count := 0
+    for i := 0; i &lt; 32; i++ {
+        xor := hash1[i] ^ hash2[i]
+        for xor != 0 {
+            xor &amp;= xor - 1
+            count++
+        }
+    }
+    return count
+}
+
+func main() {
+    s1 := &quot;hello&quot;
+    s2 := &quot;Hello&quot;
+
+    hash1 := sha256.Sum256([]byte(s1))
+    hash2 := sha256.Sum256([]byte(s2))
+
+    fmt.Printf(&quot;Hamming distance: %d bits\n&quot;, hammingDistance(hash1, hash2))
+}
+</code></pre>
+<h3 id="exercise-42-write-a-program-that-prints-the-sha256-hash-of-its-standard-input-by-default-but-supports-a-command-line-flag-to-print-the-sha384-or-sha512-hash-instead">Exercise 4.2: Write a program that prints the SHA256 hash of its standard input by default but supports a command-line flag to print the SHA384 or SHA512 hash instead.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;crypto/sha256&quot;
+    &quot;crypto/sha512&quot;
+    &quot;flag&quot;
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    hashType := flag.String(&quot;hash&quot;, &quot;sha256&quot;, &quot;hash type: sha256, sha384, or sha512&quot;)
+    flag.Parse()
+
+    data, err := io.ReadAll(os.Stdin)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, &quot;error reading input: %v\n&quot;, err)
+        os.Exit(1)
+    }
+
+    switch *hashType {
+    case &quot;sha256&quot;:
+        fmt.Printf(&quot;%x\n&quot;, sha256.Sum256(data))
+    case &quot;sha384&quot;:
+        fmt.Printf(&quot;%x\n&quot;, sha512.Sum384(data))
+    case &quot;sha512&quot;:
+        fmt.Printf(&quot;%x\n&quot;, sha512.Sum512(data))
+    default:
+        fmt.Fprintf(os.Stderr, &quot;unsupported hash type: %s\n&quot;, *hashType)
+        os.Exit(1)
+    }
+}
+</code></pre>
+<h3 id="exercise-43-rewrite-reverse-to-use-an-array-pointer-instead-of-a-slice">Exercise 4.3: Rewrite reverse to use an array pointer instead of a slice.</h3>
+<pre><code class="language-go">package main
+
+import &quot;fmt&quot;
+
+func reverse(arr *[5]int) {
+    for i, j := 0, len(arr)-1; i &lt; j; i, j = i+1, j-1 {
+        arr[i], arr[j] = arr[j], arr[i]
+    }
+}
+
+func main() {
+    a := [5]int{1, 2, 3, 4, 5}
+    fmt.Println(a)
+    reverse(&amp;a)
+    fmt.Println(a)
+}
+</code></pre>
+<h3 id="exercise-44-write-a-version-of-rotate-that-operates-in-a-single-pass">Exercise 4.4: Write a version of rotate that operates in a single pass.</h3>
+<pre><code class="language-go">package main
+
+import &quot;fmt&quot;
+
+func rotate(s []int, n int) {
+    n = n % len(s)
+    if n &lt; 0 {
+        n += len(s)
+    }
+
+    reverse(s[:n])
+    reverse(s[n:])
+    reverse(s)
+}
+
+func reverse(s []int) {
+    for i, j := 0, len(s)-1; i &lt; j; i, j = i+1, j-1 {
+        s[i], s[j] = s[j], s[i]
+    }
+}
+
+func main() {
+    s := []int{1, 2, 3, 4, 5}
+    rotate(s, 2)
+    fmt.Println(s)
+}
+</code></pre>
+<h3 id="exercise-45-write-an-in-place-function-to-eliminate-adjacent-duplicates-in-a-string-slice">Exercise 4.5: Write an in-place function to eliminate adjacent duplicates in a []string slice.</h3>
+<pre><code class="language-go">package main
+
+import &quot;fmt&quot;
+
+func removeDuplicates(s []string) []string {
+    if len(s) == 0 {
+        return s
+    }
+
+    j := 0
+    for i := 1; i &lt; len(s); i++ {
+        if s[i] != s[j] {
+            j++
+            s[j] = s[i]
+        }
+    }
+    return s[:j+1]
+}
+
+func main() {
+    s := []string{&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;b&quot;, &quot;b&quot;, &quot;c&quot;, &quot;a&quot;, &quot;a&quot;}
+    fmt.Println(removeDuplicates(s))
+}
+</code></pre>
+<h3 id="exercise-46-write-an-in-place-function-that-squashes-each-run-of-adjacent-unicode-spaces-see-unicodeisspace-in-a-utf-8-enco-ded-byte-slice-into-a-single-ascii-space">Exercise 4.6: Write an in-place function that squashes each run of adjacent Unicode spaces (see unicode.IsSpace) in a UTF-8-enco ded []byte slice into a single ASCII space.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;unicode&quot;
+    &quot;unicode/utf8&quot;
+)
+
+func squashSpaces(s []byte) []byte {
+    out := s[:0]
+    inSpace := false
+
+    for i := 0; i &lt; len(s); {
+        r, size := utf8.DecodeRune(s[i:])
+        if unicode.IsSpace(r) {
+            if !inSpace {
+                out = append(out, ' ')
+                inSpace = true
+            }
+            i += size
+        } else {
+            out = append(out, s[i:i+size]...)
+            inSpace = false
+            i += size
+        }
+    }
+
+    return out
+}
+
+func main() {
+    s := []byte(&quot;hello   world\t\nfoo  bar&quot;)
+    fmt.Printf(&quot;%q\n&quot;, s)
+    s = squashSpaces(s)
+    fmt.Printf(&quot;%q\n&quot;, s)
+}
+</code></pre>
+<h3 id="exercise-47-modify-reverse-to-reverse-the-characters-of-a-byte-slice-that-represents-a-utf-8-encoded-string-in-place-can-you-do-it-without-allocat-ing-new-memory">Exercise 4.7: Modify reverse to reverse the characters of a []byte slice that represents a UTF-8-encoded string, in place. Can you do it without allocat ing new memory?</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;unicode/utf8&quot;
+)
+
+func reverseUTF8(s []byte) {
+    for i := 0; i &lt; len(s); {
+        _, size := utf8.DecodeRune(s[i:])
+        reverse(s[i : i+size])
+        i += size
+    }
+    reverse(s)
+}
+
+func reverse(s []byte) {
+    for i, j := 0, len(s)-1; i &lt; j; i, j = i+1, j-1 {
+        s[i], s[j] = s[j], s[i]
+    }
+}
+
+func main() {
+    s := []byte(&quot;Hello, 世界&quot;)
+    fmt.Printf(&quot;%s\n&quot;, s)
+    reverseUTF8(s)
+    fmt.Printf(&quot;%s\n&quot;, s)
+}
+</code></pre>
+<h3 id="exercise-48-modify-charcount-to-count-letters-digits-and-so-on-in-their-unicode-categories-using-functions-like-unicodeisletter">Exercise 4.8: Modify charcount to count letters, digits, and so on in their Unicode categories, using functions like unicode.IsLetter.</h3>
+<pre><code class="language-go">.package main
+
+import (
+    &quot;bufio&quot;
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;os&quot;
+    &quot;unicode&quot;
+)
+
+func main() {
+    counts := make(map[rune]int)
+    letters := 0
+    digits := 0
+    spaces := 0
+    marks := 0
+    punctuation := 0
+    symbols := 0
+    other := 0
+    invalid := 0
+
+    in := bufio.NewReader(os.Stdin)
+    for {
+        r, n, err := in.ReadRune()
+        if err == io.EOF {
+            break
+        }
+        if err != nil {
+            fmt.Fprintf(os.Stderr, &quot;charcount: %v\n&quot;, err)
+            os.Exit(1)
+        }
+        if r == unicode.ReplacementChar &amp;&amp; n == 1 {
+            invalid++
+            continue
+        }
+        counts[r]++
+
+        switch {
+        case unicode.IsLetter(r):
+            letters++
+        case unicode.IsDigit(r):
+            digits++
+        case unicode.IsSpace(r):
+            spaces++
+        case unicode.IsMark(r):
+            marks++
+        case unicode.IsPunct(r):
+            punctuation++
+        case unicode.IsSymbol(r):
+            symbols++
+        default:
+            other++
+        }
+    }
+
+    fmt.Println(&quot;Categories:&quot;)
+    fmt.Printf(&quot;letters:\t%d\n&quot;, letters)
+    fmt.Printf(&quot;digits:\t\t%d\n&quot;, digits)
+    fmt.Printf(&quot;spaces:\t\t%d\n&quot;, spaces)
+    fmt.Printf(&quot;marks:\t\t%d\n&quot;, marks)
+    fmt.Printf(&quot;punctuation:\t%d\n&quot;, punctuation)
+    fmt.Printf(&quot;symbols:\t%d\n&quot;, symbols)
+    fmt.Printf(&quot;other:\t\t%d\n&quot;, other)
+    if invalid &gt; 0 {
+        fmt.Printf(&quot;invalid:\t%d\n&quot;, invalid)
+    }
+}
+</code></pre>
+<h3 id="exercise-49-write-a-program-wordfreq-to-rep-ort-the-frequency-of-each-word-in-an-input-text-file-call-inputsplitbufioscanwords-before-the-first-call-to-scan-to-break-the-input-into-words-instead-of-lines">Exercise 4.9: Write a program wordfreq to rep ort the frequency of each word in an input text file. Call input.Split(bufio.ScanWords) before the first call to Scan to break the input into words instead of lines.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;bufio&quot;
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Fprintf(os.Stderr, &quot;usage: wordfreq &lt;file&gt;\n&quot;)
+        os.Exit(1)
+    }
+
+    file, err := os.Open(os.Args[1])
+    if err != nil {
+        fmt.Fprintf(os.Stderr, &quot;wordfreq: %v\n&quot;, err)
+        os.Exit(1)
+    }
+    defer file.Close()
+
+    counts := make(map[string]int)
+    input := bufio.NewScanner(file)
+    input.Split(bufio.ScanWords)
+
+    for input.Scan() {
+        counts[input.Text()]++
+    }
+
+    if err := input.Err(); err != nil {
+        fmt.Fprintf(os.Stderr, &quot;wordfreq: %v\n&quot;, err)
+        os.Exit(1)
+    }
+
+    for word, count := range counts {
+        fmt.Printf(&quot;%s\t%d\n&quot;, word, count)
+    }
+}
+</code></pre>
+<h3 id="exercise-410-modify-issues-to-report-the-results-in-age-categories-say-less-than-a-month-old-less-than-a-year-old-and-more-than-a-year-old">Exercise 4.10: Modify issues to report the results in age categories, say less than a month old, less than a year old, and more than a year old.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+    &quot;log&quot;
+    &quot;net/http&quot;
+    &quot;net/url&quot;
+    &quot;os&quot;
+    &quot;time&quot;
+)
+
+const IssuesURL = &quot;https://api.github.com/search/issues&quot;
+
+type IssuesSearchResult struct {
+    TotalCount int `json:&quot;total_count&quot;`
+    Items      []*Issue
+}
+
+type Issue struct {
+    Number    int
+    HTMLURL   string `json:&quot;html_url&quot;`
+    Title     string
+    State     string
+    User      *User
+    CreatedAt time.Time `json:&quot;created_at&quot;`
+}
+
+type User struct {
+    Login   string
+    HTMLURL string `json:&quot;html_url&quot;`
+}
+
+func SearchIssues(terms []string) (*IssuesSearchResult, error) {
+    q := url.QueryEscape(fmt.Sprintf(&quot;%v&quot;, terms))
+    resp, err := http.Get(IssuesURL + &quot;?q=&quot; + q)
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return nil, fmt.Errorf(&quot;search query failed: %s&quot;, resp.Status)
+    }
+
+    var result IssuesSearchResult
+    if err := json.NewDecoder(resp.Body).Decode(&amp;result); err != nil {
+        return nil, err
+    }
+    return &amp;result, nil
+}
+
+func main() {
+    result, err := SearchIssues(os.Args[1:])
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    now := time.Now()
+    var lessThanMonth, lessThanYear, moreThanYear []*Issue
+
+    for _, item := range result.Items {
+        age := now.Sub(item.CreatedAt)
+        if age &lt; 30*24*time.Hour {
+            lessThanMonth = append(lessThanMonth, item)
+        } else if age &lt; 365*24*time.Hour {
+            lessThanYear = append(lessThanYear, item)
+        } else {
+            moreThanYear = append(moreThanYear, item)
+        }
+    }
+
+    fmt.Printf(&quot;%d issues:\n&quot;, result.TotalCount)
+
+    fmt.Println(&quot;\nLess than a month old:&quot;)
+    for _, item := range lessThanMonth {
+        fmt.Printf(&quot;#%-5d %9.9s %.55s\n&quot;, item.Number, item.User.Login, item.Title)
+    }
+
+    fmt.Println(&quot;\nLess than a year old:&quot;)
+    for _, item := range lessThanYear {
+        fmt.Printf(&quot;#%-5d %9.9s %.55s\n&quot;, item.Number, item.User.Login, item.Title)
+    }
+
+    fmt.Println(&quot;\nMore than a year old:&quot;)
+    for _, item := range moreThanYear {
+        fmt.Printf(&quot;#%-5d %9.9s %.55s\n&quot;, item.Number, item.User.Login, item.Title)
+    }
+}
+</code></pre>
+<h3 id="exercise-411-build-a-tool-that-lets-users-create-read-update-and-close-github-issues-from-the-command-line-invoking-their-preferred-text-editor-when-subst-antial-text-input-is-required">Exercise 4.11: Build a tool that lets users create, read, update, and close GitHub issues from the command line, invoking their preferred text editor when subst antial text input is required.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;bytes&quot;
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+    &quot;os/exec&quot;
+    &quot;strings&quot;
+)
+
+const APIBase = &quot;https://api.github.com&quot;
+
+type Issue struct {
+    Number int    `json:&quot;number,omitempty&quot;`
+    Title  string `json:&quot;title&quot;`
+    Body   string `json:&quot;body&quot;`
+    State  string `json:&quot;state,omitempty&quot;`
+}
+
+func getToken() string {
+    token := os.Getenv(&quot;GITHUB_TOKEN&quot;)
+    if token == &quot;&quot; {
+        fmt.Fprintln(os.Stderr, &quot;GITHUB_TOKEN environment variable not set&quot;)
+        os.Exit(1)
+    }
+    return token
+}
+
+func editInEditor() (string, error) {
+    editor := os.Getenv(&quot;EDITOR&quot;)
+    if editor == &quot;&quot; {
+        editor = &quot;vi&quot;
+    }
+
+    tmpfile, err := os.CreateTemp(&quot;&quot;, &quot;issue-*.txt&quot;)
+    if err != nil {
+        return &quot;&quot;, err
+    }
+    defer os.Remove(tmpfile.Name())
+    tmpfile.Close()
+
+    cmd := exec.Command(editor, tmpfile.Name())
+    cmd.Stdin = os.Stdin
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+
+    if err := cmd.Run(); err != nil {
+        return &quot;&quot;, err
+    }
+
+    content, err := os.ReadFile(tmpfile.Name())
+    if err != nil {
+        return &quot;&quot;, err
+    }
+
+    return string(content), nil
+}
+
+func createIssue(owner, repo, title, body string) error {
+    issue := Issue{Title: title, Body: body}
+    data, err := json.Marshal(issue)
+    if err != nil {
+        return err
+    }
+
+    url := fmt.Sprintf(&quot;%s/repos/%s/%s/issues&quot;, APIBase, owner, repo)
+    req, err := http.NewRequest(&quot;POST&quot;, url, bytes.NewBuffer(data))
+    if err != nil {
+        return err
+    }
+
+    req.Header.Set(&quot;Authorization&quot;, &quot;token &quot;+getToken())
+    req.Header.Set(&quot;Content-Type&quot;, &quot;application/json&quot;)
+
+    resp, err := http.DefaultClient.Do(req)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusCreated {
+        body, _ := io.ReadAll(resp.Body)
+        return fmt.Errorf(&quot;failed to create issue: %s\n%s&quot;, resp.Status, body)
+    }
+
+    fmt.Println(&quot;Issue created successfully&quot;)
+    return nil
+}
+
+func readIssue(owner, repo, number string) error {
+    url := fmt.Sprintf(&quot;%s/repos/%s/%s/issues/%s&quot;, APIBase, owner, repo, number)
+    req, err := http.NewRequest(&quot;GET&quot;, url, nil)
+    if err != nil {
+        return err
+    }
+
+    req.Header.Set(&quot;Authorization&quot;, &quot;token &quot;+getToken())
+
+    resp, err := http.DefaultClient.Do(req)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return fmt.Errorf(&quot;failed to read issue: %s&quot;, resp.Status)
+    }
+
+    var issue Issue
+    if err := json.NewDecoder(resp.Body).Decode(&amp;issue); err != nil {
+        return err
+    }
+
+    fmt.Printf(&quot;Issue #%d\nTitle: %s\nState: %s\n\n%s\n&quot;, issue.Number, issue.Title, issue.State, issue.Body)
+    return nil
+}
+
+func updateIssue(owner, repo, number, title, body string) error {
+    issue := Issue{Title: title, Body: body}
+    data, err := json.Marshal(issue)
+    if err != nil {
+        return err
+    }
+
+    url := fmt.Sprintf(&quot;%s/repos/%s/%s/issues/%s&quot;, APIBase, owner, repo, number)
+    req, err := http.NewRequest(&quot;PATCH&quot;, url, bytes.NewBuffer(data))
+    if err != nil {
+        return err
+    }
+
+    req.Header.Set(&quot;Authorization&quot;, &quot;token &quot;+getToken())
+    req.Header.Set(&quot;Content-Type&quot;, &quot;application/json&quot;)
+
+    resp, err := http.DefaultClient.Do(req)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        body, _ := io.ReadAll(resp.Body)
+        return fmt.Errorf(&quot;failed to update issue: %s\n%s&quot;, resp.Status, body)
+    }
+
+    fmt.Println(&quot;Issue updated successfully&quot;)
+    return nil
+}
+
+func closeIssue(owner, repo, number string) error {
+    issue := Issue{State: &quot;closed&quot;}
+    data, err := json.Marshal(issue)
+    if err != nil {
+        return err
+    }
+
+    url := fmt.Sprintf(&quot;%s/repos/%s/%s/issues/%s&quot;, APIBase, owner, repo, number)
+    req, err := http.NewRequest(&quot;PATCH&quot;, url, bytes.NewBuffer(data))
+    if err != nil {
+        return err
+    }
+
+    req.Header.Set(&quot;Authorization&quot;, &quot;token &quot;+getToken())
+    req.Header.Set(&quot;Content-Type&quot;, &quot;application/json&quot;)
+
+    resp, err := http.DefaultClient.Do(req)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return fmt.Errorf(&quot;failed to close issue: %s&quot;, resp.Status)
+    }
+
+    fmt.Println(&quot;Issue closed successfully&quot;)
+    return nil
+}
+
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Fprintf(os.Stderr, &quot;usage: issues &lt;command&gt; [args]\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;commands:\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;  create &lt;owner/repo&gt; &lt;title&gt;\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;  read &lt;owner/repo&gt; &lt;number&gt;\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;  update &lt;owner/repo&gt; &lt;number&gt; &lt;title&gt;\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;  close &lt;owner/repo&gt; &lt;number&gt;\n&quot;)
+        os.Exit(1)
+    }
+
+    command := os.Args[1]
+
+    switch command {
+    case &quot;create&quot;:
+        if len(os.Args) &lt; 4 {
+            fmt.Fprintln(os.Stderr, &quot;usage: issues create &lt;owner/repo&gt; &lt;title&gt;&quot;)
+            os.Exit(1)
+        }
+        parts := strings.Split(os.Args[2], &quot;/&quot;)
+        if len(parts) != 2 {
+            fmt.Fprintln(os.Stderr, &quot;repo must be in format owner/repo&quot;)
+            os.Exit(1)
+        }
+        title := os.Args[3]
+        body, err := editInEditor()
+        if err != nil {
+            fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+            os.Exit(1)
+        }
+        if err := createIssue(parts[0], parts[1], title, body); err != nil {
+            fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+            os.Exit(1)
+        }
+
+    case &quot;read&quot;:
+        if len(os.Args) &lt; 4 {
+            fmt.Fprintln(os.Stderr, &quot;usage: issues read &lt;owner/repo&gt; &lt;number&gt;&quot;)
+            os.Exit(1)
+        }
+        parts := strings.Split(os.Args[2], &quot;/&quot;)
+        if len(parts) != 2 {
+            fmt.Fprintln(os.Stderr, &quot;repo must be in format owner/repo&quot;)
+            os.Exit(1)
+        }
+        if err := readIssue(parts[0], parts[1], os.Args[3]); err != nil {
+            fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+            os.Exit(1)
+        }
+
+    case &quot;update&quot;:
+        if len(os.Args) &lt; 5 {
+            fmt.Fprintln(os.Stderr, &quot;usage: issues update &lt;owner/repo&gt; &lt;number&gt; &lt;title&gt;&quot;)
+            os.Exit(1)
+        }
+        parts := strings.Split(os.Args[2], &quot;/&quot;)
+        if len(parts) != 2 {
+            fmt.Fprintln(os.Stderr, &quot;repo must be in format owner/repo&quot;)
+            os.Exit(1)
+        }
+        title := os.Args[4]
+        body, err := editInEditor()
+        if err != nil {
+            fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+            os.Exit(1)
+        }
+        if err := updateIssue(parts[0], parts[1], os.Args[3], title, body); err != nil {
+            fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+            os.Exit(1)
+        }
+
+    case &quot;close&quot;:
+        if len(os.Args) &lt; 4 {
+            fmt.Fprintln(os.Stderr, &quot;usage: issues close &lt;owner/repo&gt; &lt;number&gt;&quot;)
+            os.Exit(1)
+        }
+        parts := strings.Split(os.Args[2], &quot;/&quot;)
+        if len(parts) != 2 {
+            fmt.Fprintln(os.Stderr, &quot;repo must be in format owner/repo&quot;)
+            os.Exit(1)
+        }
+        if err := closeIssue(parts[0], parts[1], os.Args[3]); err != nil {
+            fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+            os.Exit(1)
+        }
+
+    default:
+        fmt.Fprintf(os.Stderr, &quot;unknown command: %s\n&quot;, command)
+        os.Exit(1)
+    }
+}
+</code></pre>
+<h3 id="exercise-412-the-popu-lar-web-comic-xkcd-has-a-json-interface-for-example-a-request-to-httpsxkcdcom571info0json-produces-a-detailed-description-of-comic-571-one-of-many-favorites-download-each-url-once-and-build-an-offline-index-write-a-tool-xkcd-that-using-this-index-prints-the-url-and-transcript-of-each-comic-that-matches-a-search-term-provided-on-the-command-line">Exercise 4.12: The popu lar web comic xkcd has a JSON interface. For example, a request to https://xkcd.com/571/info.0.json produces a detailed description of comic 571, one of many favorites. Download each URL (once!) and build an offline index. Write a tool xkcd that, using this index, prints the URL and transcript of each comic that matches a search term provided on the command line.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+    &quot;path/filepath&quot;
+    &quot;strconv&quot;
+    &quot;strings&quot;
+)
+
+const (
+    indexDir  = &quot;xkcd_index&quot;
+    maxComics = 3000
+)
+
+type Comic struct {
+    Num        int    `json:&quot;num&quot;`
+    Title      string `json:&quot;title&quot;`
+    Transcript string `json:&quot;transcript&quot;`
+    Alt        string `json:&quot;alt&quot;`
+    Img        string `json:&quot;img&quot;`
+}
+
+func downloadComic(num int) (*Comic, error) {
+    url := fmt.Sprintf(&quot;https://xkcd.com/%d/info.0.json&quot;, num)
+    resp, err := http.Get(url)
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return nil, fmt.Errorf(&quot;status: %s&quot;, resp.Status)
+    }
+
+    var comic Comic
+    if err := json.NewDecoder(resp.Body).Decode(&amp;comic); err != nil {
+        return nil, err
+    }
+
+    return &amp;comic, nil
+}
+
+func saveComic(comic *Comic) error {
+    if err := os.MkdirAll(indexDir, 0755); err != nil {
+        return err
+    }
+
+    filename := filepath.Join(indexDir, fmt.Sprintf(&quot;%d.json&quot;, comic.Num))
+    data, err := json.MarshalIndent(comic, &quot;&quot;, &quot;  &quot;)
+    if err != nil {
+        return err
+    }
+
+    return os.WriteFile(filename, data, 0644)
+}
+
+func loadComic(num int) (*Comic, error) {
+    filename := filepath.Join(indexDir, fmt.Sprintf(&quot;%d.json&quot;, num))
+    data, err := os.ReadFile(filename)
+    if err != nil {
+        return nil, err
+    }
+
+    var comic Comic
+    if err := json.Unmarshal(data, &amp;comic); err != nil {
+        return nil, err
+    }
+
+    return &amp;comic, nil
+}
+
+func buildIndex() error {
+    fmt.Println(&quot;Building index...&quot;)
+    for i := 1; i &lt;= maxComics; i++ {
+        filename := filepath.Join(indexDir, fmt.Sprintf(&quot;%d.json&quot;, i))
+        if _, err := os.Stat(filename); err == nil {
+            continue
+        }
+
+        comic, err := downloadComic(i)
+        if err != nil {
+            continue
+        }
+
+        if err := saveComic(comic); err != nil {
+            return err
+        }
+
+        fmt.Printf(&quot;Downloaded comic %d\n&quot;, i)
+    }
+    fmt.Println(&quot;Index built successfully&quot;)
+    return nil
+}
+
+func search(term string) error {
+    files, err := os.ReadDir(indexDir)
+    if err != nil {
+        return fmt.Errorf(&quot;index not found, run with 'build' command first&quot;)
+    }
+
+    term = strings.ToLower(term)
+    found := false
+
+    for _, file := range files {
+        if filepath.Ext(file.Name()) != &quot;.json&quot; {
+            continue
+        }
+
+        numStr := strings.TrimSuffix(file.Name(), &quot;.json&quot;)
+        num, err := strconv.Atoi(numStr)
+        if err != nil {
+            continue
+        }
+
+        comic, err := loadComic(num)
+        if err != nil {
+            continue
+        }
+
+        if strings.Contains(strings.ToLower(comic.Title), term) ||
+            strings.Contains(strings.ToLower(comic.Transcript), term) ||
+            strings.Contains(strings.ToLower(comic.Alt), term) {
+            fmt.Printf(&quot;Comic #%d: %s\n&quot;, comic.Num, comic.Title)
+            fmt.Printf(&quot;URL: https://xkcd.com/%d/\n&quot;, comic.Num)
+            fmt.Printf(&quot;Transcript: %s\n\n&quot;, comic.Transcript)
+            found = true
+        }
+    }
+
+    if !found {
+        fmt.Println(&quot;No comics found matching:&quot;, term)
+    }
+
+    return nil
+}
+
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Fprintf(os.Stderr, &quot;usage: xkcd &lt;command&gt; [args]\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;commands:\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;  build          - build the index\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;  search &lt;term&gt;  - search for comics\n&quot;)
+        os.Exit(1)
+    }
+
+    command := os.Args[1]
+
+    switch command {
+    case &quot;build&quot;:
+        if err := buildIndex(); err != nil {
+            fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+            os.Exit(1)
+        }
+    case &quot;search&quot;:
+        if len(os.Args) &lt; 3 {
+            fmt.Fprintf(os.Stderr, &quot;usage: xkcd search &lt;term&gt;\n&quot;)
+            os.Exit(1)
+        }
+        if err := search(os.Args[2]); err != nil {
+            fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+            os.Exit(1)
+        }
+    default:
+        fmt.Fprintf(os.Stderr, &quot;unknown command: %s\n&quot;, command)
+        os.Exit(1)
+    }
+}
+</code></pre>
+<h3 id="exercise-413-the-json-based-web-service-of-the-open-movie-databas-e-lets-you-search-httpsomdbapicom-for-a-movie-by-name-and-download-its-poster-image-write-a-tool-poster-that-downloads-the-poster-image-for-the-movie-named-on-the-command-line">Exercise 4.13: The JSON-based web service of the Open Movie Databas e lets you search https://omdbapi.com/ for a movie by name and download its poster image. Write a tool poster that downloads the poster image for the movie named on the command line.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;net/url&quot;
+    &quot;os&quot;
+    &quot;strings&quot;
+)
+
+const OMDBAPI = &quot;https://www.omdbapi.com/&quot;
+
+type Movie struct {
+    Title  string `json:&quot;Title&quot;`
+    Poster string `json:&quot;Poster&quot;`
+}
+
+func searchMovie(title, apiKey string) (*Movie, error) {
+    params := url.Values{}
+    params.Add(&quot;t&quot;, title)
+    params.Add(&quot;apikey&quot;, apiKey)
+
+    resp, err := http.Get(OMDBAPI + &quot;?&quot; + params.Encode())
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return nil, fmt.Errorf(&quot;search failed: %s&quot;, resp.Status)
+    }
+
+    var movie Movie
+    if err := json.NewDecoder(resp.Body).Decode(&amp;movie); err != nil {
+        return nil, err
+    }
+
+    if movie.Poster == &quot;&quot; || movie.Poster == &quot;N/A&quot; {
+        return nil, fmt.Errorf(&quot;no poster available for: %s&quot;, title)
+    }
+
+    return &amp;movie, nil
+}
+
+func downloadPoster(posterURL, filename string) error {
+    resp, err := http.Get(posterURL)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return fmt.Errorf(&quot;download failed: %s&quot;, resp.Status)
+    }
+
+    file, err := os.Create(filename)
+    if err != nil {
+        return err
+    }
+    defer file.Close()
+
+    _, err = io.Copy(file, resp.Body)
+    return err
+}
+
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Fprintf(os.Stderr, &quot;usage: poster &lt;movie title&gt;\n&quot;)
+        os.Exit(1)
+    }
+
+    apiKey := os.Getenv(&quot;OMDB_API_KEY&quot;)
+    if apiKey == &quot;&quot; {
+        fmt.Fprintf(os.Stderr, &quot;OMDB_API_KEY environment variable not set\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;Get a free API key from https://www.omdbapi.com/apikey.aspx\n&quot;)
+        os.Exit(1)
+    }
+
+    title := strings.Join(os.Args[1:], &quot; &quot;)
+
+    movie, err := searchMovie(title, apiKey)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+        os.Exit(1)
+    }
+
+    filename := strings.ReplaceAll(movie.Title, &quot; &quot;, &quot;_&quot;) + &quot;.jpg&quot;
+
+    if err := downloadPoster(movie.Poster, filename); err != nil {
+        fmt.Fprintf(os.Stderr, &quot;error downloading poster: %v\n&quot;, err)
+        os.Exit(1)
+    }
+
+    fmt.Printf(&quot;Poster for '%s' saved as %s\n&quot;, movie.Title, filename)
+}
+</code></pre>
+<h3 id="exercise-414-create-a-web-server-that-quer-ies-github-once-and-then-allows-navigation-of-the-list-of-bug-rep-orts-milestones-and-users">Exercise 4.14: Create a web server that quer ies GitHub once and then allows navigation of the list of bug rep orts, milestones, and users.</h3>
+<pre><code class="language-go">package main
+
+import (
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+    &quot;io&quot;
+    &quot;net/http&quot;
+    &quot;net/url&quot;
+    &quot;os&quot;
+    &quot;strings&quot;
+)
+
+const OMDBAPI = &quot;https://www.omdbapi.com/&quot;
+
+type Movie struct {
+    Title  string `json:&quot;Title&quot;`
+    Poster string `json:&quot;Poster&quot;`
+}
+
+func searchMovie(title, apiKey string) (*Movie, error) {
+    params := url.Values{}
+    params.Add(&quot;t&quot;, title)
+    params.Add(&quot;apikey&quot;, apiKey)
+
+    resp, err := http.Get(OMDBAPI + &quot;?&quot; + params.Encode())
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return nil, fmt.Errorf(&quot;search failed: %s&quot;, resp.Status)
+    }
+
+    var movie Movie
+    if err := json.NewDecoder(resp.Body).Decode(&amp;movie); err != nil {
+        return nil, err
+    }
+
+    if movie.Poster == &quot;&quot; || movie.Poster == &quot;N/A&quot; {
+        return nil, fmt.Errorf(&quot;no poster available for: %s&quot;, title)
+    }
+
+    return &amp;movie, nil
+}
+
+func downloadPoster(posterURL, filename string) error {
+    resp, err := http.Get(posterURL)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return fmt.Errorf(&quot;download failed: %s&quot;, resp.Status)
+    }
+
+    file, err := os.Create(filename)
+    if err != nil {
+        return err
+    }
+    defer file.Close()
+
+    _, err = io.Copy(file, resp.Body)
+    return err
+}
+
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Fprintf(os.Stderr, &quot;usage: poster &lt;movie title&gt;\n&quot;)
+        os.Exit(1)
+    }
+
+    apiKey := os.Getenv(&quot;OMDB_API_KEY&quot;)
+    if apiKey == &quot;&quot; {
+        fmt.Fprintf(os.Stderr, &quot;OMDB_API_KEY environment variable not set\n&quot;)
+        fmt.Fprintf(os.Stderr, &quot;Get a free API key from https://www.omdbapi.com/apikey.aspx\n&quot;)
+        os.Exit(1)
+    }
+
+    title := strings.Join(os.Args[1:], &quot; &quot;)
+
+    movie, err := searchMovie(title, apiKey)
+    if err != nil {
+        fmt.Fprintf(os.Stderr, &quot;error: %v\n&quot;, err)
+        os.Exit(1)
+    }
+
+    filename := strings.ReplaceAll(movie.Title, &quot; &quot;, &quot;_&quot;) + &quot;.jpg&quot;
+
+    if err := downloadPoster(movie.Poster, filename); err != nil {
+        fmt.Fprintf(os.Stderr, &quot;error downloading poster: %v\n&quot;, err)
+        os.Exit(1)
+    }
+
+    fmt.Printf(&quot;Poster for '%s' saved as %s\n&quot;, movie.Title, filename)
+}
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.sections", "navigation.expand", "navigation.sidebar"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
