@@ -1412,3 +1412,1094 @@ const (
 ```
 
 ## Chapter 4
+
+### Exercise 4.1: Write a function that counts the number of bits that are different in two SHA256 hashes. (See PopCount from Section 2.6.2.)
+
+```go
+package main
+
+import (
+	"crypto/sha256"
+	"fmt"
+)
+
+func hammingDistance(hash1, hash2 [32]byte) int {
+	count := 0
+	for i := 0; i < 32; i++ {
+		xor := hash1[i] ^ hash2[i]
+		for xor != 0 {
+			xor &= xor - 1
+			count++
+		}
+	}
+	return count
+}
+
+func main() {
+	s1 := "hello"
+	s2 := "Hello"
+
+	hash1 := sha256.Sum256([]byte(s1))
+	hash2 := sha256.Sum256([]byte(s2))
+
+	fmt.Printf("Hamming distance: %d bits\n", hammingDistance(hash1, hash2))
+}
+```
+
+### Exercise 4.2: Write a program that prints the SHA256 hash of its standard input by default but supports a command-line flag to print the SHA384 or SHA512 hash instead.
+
+```go
+package main
+
+import (
+	"crypto/sha256"
+	"crypto/sha512"
+	"flag"
+	"fmt"
+	"io"
+	"os"
+)
+
+func main() {
+	hashType := flag.String("hash", "sha256", "hash type: sha256, sha384, or sha512")
+	flag.Parse()
+
+	data, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error reading input: %v\n", err)
+		os.Exit(1)
+	}
+
+	switch *hashType {
+	case "sha256":
+		fmt.Printf("%x\n", sha256.Sum256(data))
+	case "sha384":
+		fmt.Printf("%x\n", sha512.Sum384(data))
+	case "sha512":
+		fmt.Printf("%x\n", sha512.Sum512(data))
+	default:
+		fmt.Fprintf(os.Stderr, "unsupported hash type: %s\n", *hashType)
+		os.Exit(1)
+	}
+}
+```
+
+### Exercise 4.3: Rewrite reverse to use an array pointer instead of a slice.
+
+```go
+package main
+
+import "fmt"
+
+func reverse(arr *[5]int) {
+	for i, j := 0, len(arr)-1; i < j; i, j = i+1, j-1 {
+		arr[i], arr[j] = arr[j], arr[i]
+	}
+}
+
+func main() {
+	a := [5]int{1, 2, 3, 4, 5}
+	fmt.Println(a)
+	reverse(&a)
+	fmt.Println(a)
+}
+```
+
+### Exercise 4.4: Write a version of rotate that operates in a single pass.
+
+```go
+package main
+
+import "fmt"
+
+func rotate(s []int, n int) {
+	n = n % len(s)
+	if n < 0 {
+		n += len(s)
+	}
+
+	reverse(s[:n])
+	reverse(s[n:])
+	reverse(s)
+}
+
+func reverse(s []int) {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+}
+
+func main() {
+	s := []int{1, 2, 3, 4, 5}
+	rotate(s, 2)
+	fmt.Println(s)
+}
+```
+
+### Exercise 4.5: Write an in-place function to eliminate adjacent duplicates in a []string slice.
+
+```go
+package main
+
+import "fmt"
+
+func removeDuplicates(s []string) []string {
+	if len(s) == 0 {
+		return s
+	}
+
+	j := 0
+	for i := 1; i < len(s); i++ {
+		if s[i] != s[j] {
+			j++
+			s[j] = s[i]
+		}
+	}
+	return s[:j+1]
+}
+
+func main() {
+	s := []string{"a", "a", "b", "b", "b", "c", "a", "a"}
+	fmt.Println(removeDuplicates(s))
+}
+```
+
+### Exercise 4.6: Write an in-place function that squashes each run of adjacent Unicode spaces (see unicode.IsSpace) in a UTF-8-enco ded []byte slice into a single ASCII space.
+
+```go
+package main
+
+import (
+	"fmt"
+	"unicode"
+	"unicode/utf8"
+)
+
+func squashSpaces(s []byte) []byte {
+	out := s[:0]
+	inSpace := false
+
+	for i := 0; i < len(s); {
+		r, size := utf8.DecodeRune(s[i:])
+		if unicode.IsSpace(r) {
+			if !inSpace {
+				out = append(out, ' ')
+				inSpace = true
+			}
+			i += size
+		} else {
+			out = append(out, s[i:i+size]...)
+			inSpace = false
+			i += size
+		}
+	}
+
+	return out
+}
+
+func main() {
+	s := []byte("hello   world\t\nfoo  bar")
+	fmt.Printf("%q\n", s)
+	s = squashSpaces(s)
+	fmt.Printf("%q\n", s)
+}
+```
+
+### Exercise 4.7: Modify reverse to reverse the characters of a []byte slice that represents a UTF-8-encoded string, in place. Can you do it without allocat ing new memory?
+
+```go
+package main
+
+import (
+	"fmt"
+	"unicode/utf8"
+)
+
+func reverseUTF8(s []byte) {
+	for i := 0; i < len(s); {
+		_, size := utf8.DecodeRune(s[i:])
+		reverse(s[i : i+size])
+		i += size
+	}
+	reverse(s)
+}
+
+func reverse(s []byte) {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+}
+
+func main() {
+	s := []byte("Hello, 世界")
+	fmt.Printf("%s\n", s)
+	reverseUTF8(s)
+	fmt.Printf("%s\n", s)
+}
+```
+
+### Exercise 4.8: Modify charcount to count letters, digits, and so on in their Unicode categories, using functions like unicode.IsLetter.
+
+```go
+.package main
+
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"unicode"
+)
+
+func main() {
+	counts := make(map[rune]int)
+	letters := 0
+	digits := 0
+	spaces := 0
+	marks := 0
+	punctuation := 0
+	symbols := 0
+	other := 0
+	invalid := 0
+
+	in := bufio.NewReader(os.Stdin)
+	for {
+		r, n, err := in.ReadRune()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "charcount: %v\n", err)
+			os.Exit(1)
+		}
+		if r == unicode.ReplacementChar && n == 1 {
+			invalid++
+			continue
+		}
+		counts[r]++
+
+		switch {
+		case unicode.IsLetter(r):
+			letters++
+		case unicode.IsDigit(r):
+			digits++
+		case unicode.IsSpace(r):
+			spaces++
+		case unicode.IsMark(r):
+			marks++
+		case unicode.IsPunct(r):
+			punctuation++
+		case unicode.IsSymbol(r):
+			symbols++
+		default:
+			other++
+		}
+	}
+
+	fmt.Println("Categories:")
+	fmt.Printf("letters:\t%d\n", letters)
+	fmt.Printf("digits:\t\t%d\n", digits)
+	fmt.Printf("spaces:\t\t%d\n", spaces)
+	fmt.Printf("marks:\t\t%d\n", marks)
+	fmt.Printf("punctuation:\t%d\n", punctuation)
+	fmt.Printf("symbols:\t%d\n", symbols)
+	fmt.Printf("other:\t\t%d\n", other)
+	if invalid > 0 {
+		fmt.Printf("invalid:\t%d\n", invalid)
+	}
+}
+```
+
+### Exercise 4.9: Write a program wordfreq to rep ort the frequency of each word in an input text file. Call input.Split(bufio.ScanWords) before the first call to Scan to break the input into words instead of lines.
+
+```go
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Fprintf(os.Stderr, "usage: wordfreq <file>\n")
+		os.Exit(1)
+	}
+
+	file, err := os.Open(os.Args[1])
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "wordfreq: %v\n", err)
+		os.Exit(1)
+	}
+	defer file.Close()
+
+	counts := make(map[string]int)
+	input := bufio.NewScanner(file)
+	input.Split(bufio.ScanWords)
+
+	for input.Scan() {
+		counts[input.Text()]++
+	}
+
+	if err := input.Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "wordfreq: %v\n", err)
+		os.Exit(1)
+	}
+
+	for word, count := range counts {
+		fmt.Printf("%s\t%d\n", word, count)
+	}
+}
+```
+
+### Exercise 4.10: Modify issues to report the results in age categories, say less than a month old, less than a year old, and more than a year old.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"net/url"
+	"os"
+	"time"
+)
+
+const IssuesURL = "https://api.github.com/search/issues"
+
+type IssuesSearchResult struct {
+	TotalCount int `json:"total_count"`
+	Items      []*Issue
+}
+
+type Issue struct {
+	Number    int
+	HTMLURL   string `json:"html_url"`
+	Title     string
+	State     string
+	User      *User
+	CreatedAt time.Time `json:"created_at"`
+}
+
+type User struct {
+	Login   string
+	HTMLURL string `json:"html_url"`
+}
+
+func SearchIssues(terms []string) (*IssuesSearchResult, error) {
+	q := url.QueryEscape(fmt.Sprintf("%v", terms))
+	resp, err := http.Get(IssuesURL + "?q=" + q)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("search query failed: %s", resp.Status)
+	}
+
+	var result IssuesSearchResult
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+func main() {
+	result, err := SearchIssues(os.Args[1:])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	now := time.Now()
+	var lessThanMonth, lessThanYear, moreThanYear []*Issue
+
+	for _, item := range result.Items {
+		age := now.Sub(item.CreatedAt)
+		if age < 30*24*time.Hour {
+			lessThanMonth = append(lessThanMonth, item)
+		} else if age < 365*24*time.Hour {
+			lessThanYear = append(lessThanYear, item)
+		} else {
+			moreThanYear = append(moreThanYear, item)
+		}
+	}
+
+	fmt.Printf("%d issues:\n", result.TotalCount)
+
+	fmt.Println("\nLess than a month old:")
+	for _, item := range lessThanMonth {
+		fmt.Printf("#%-5d %9.9s %.55s\n", item.Number, item.User.Login, item.Title)
+	}
+
+	fmt.Println("\nLess than a year old:")
+	for _, item := range lessThanYear {
+		fmt.Printf("#%-5d %9.9s %.55s\n", item.Number, item.User.Login, item.Title)
+	}
+
+	fmt.Println("\nMore than a year old:")
+	for _, item := range moreThanYear {
+		fmt.Printf("#%-5d %9.9s %.55s\n", item.Number, item.User.Login, item.Title)
+	}
+}
+```
+
+### Exercise 4.11: Build a tool that lets users create, read, update, and close GitHub issues from the command line, invoking their preferred text editor when subst antial text input is required.
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"os/exec"
+	"strings"
+)
+
+const APIBase = "https://api.github.com"
+
+type Issue struct {
+	Number int    `json:"number,omitempty"`
+	Title  string `json:"title"`
+	Body   string `json:"body"`
+	State  string `json:"state,omitempty"`
+}
+
+func getToken() string {
+	token := os.Getenv("GITHUB_TOKEN")
+	if token == "" {
+		fmt.Fprintln(os.Stderr, "GITHUB_TOKEN environment variable not set")
+		os.Exit(1)
+	}
+	return token
+}
+
+func editInEditor() (string, error) {
+	editor := os.Getenv("EDITOR")
+	if editor == "" {
+		editor = "vi"
+	}
+
+	tmpfile, err := os.CreateTemp("", "issue-*.txt")
+	if err != nil {
+		return "", err
+	}
+	defer os.Remove(tmpfile.Name())
+	tmpfile.Close()
+
+	cmd := exec.Command(editor, tmpfile.Name())
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		return "", err
+	}
+
+	content, err := os.ReadFile(tmpfile.Name())
+	if err != nil {
+		return "", err
+	}
+
+	return string(content), nil
+}
+
+func createIssue(owner, repo, title, body string) error {
+	issue := Issue{Title: title, Body: body}
+	data, err := json.Marshal(issue)
+	if err != nil {
+		return err
+	}
+
+	url := fmt.Sprintf("%s/repos/%s/%s/issues", APIBase, owner, repo)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", "token "+getToken())
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusCreated {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("failed to create issue: %s\n%s", resp.Status, body)
+	}
+
+	fmt.Println("Issue created successfully")
+	return nil
+}
+
+func readIssue(owner, repo, number string) error {
+	url := fmt.Sprintf("%s/repos/%s/%s/issues/%s", APIBase, owner, repo, number)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", "token "+getToken())
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to read issue: %s", resp.Status)
+	}
+
+	var issue Issue
+	if err := json.NewDecoder(resp.Body).Decode(&issue); err != nil {
+		return err
+	}
+
+	fmt.Printf("Issue #%d\nTitle: %s\nState: %s\n\n%s\n", issue.Number, issue.Title, issue.State, issue.Body)
+	return nil
+}
+
+func updateIssue(owner, repo, number, title, body string) error {
+	issue := Issue{Title: title, Body: body}
+	data, err := json.Marshal(issue)
+	if err != nil {
+		return err
+	}
+
+	url := fmt.Sprintf("%s/repos/%s/%s/issues/%s", APIBase, owner, repo, number)
+	req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(data))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", "token "+getToken())
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("failed to update issue: %s\n%s", resp.Status, body)
+	}
+
+	fmt.Println("Issue updated successfully")
+	return nil
+}
+
+func closeIssue(owner, repo, number string) error {
+	issue := Issue{State: "closed"}
+	data, err := json.Marshal(issue)
+	if err != nil {
+		return err
+	}
+
+	url := fmt.Sprintf("%s/repos/%s/%s/issues/%s", APIBase, owner, repo, number)
+	req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(data))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", "token "+getToken())
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to close issue: %s", resp.Status)
+	}
+
+	fmt.Println("Issue closed successfully")
+	return nil
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Fprintf(os.Stderr, "usage: issues <command> [args]\n")
+		fmt.Fprintf(os.Stderr, "commands:\n")
+		fmt.Fprintf(os.Stderr, "  create <owner/repo> <title>\n")
+		fmt.Fprintf(os.Stderr, "  read <owner/repo> <number>\n")
+		fmt.Fprintf(os.Stderr, "  update <owner/repo> <number> <title>\n")
+		fmt.Fprintf(os.Stderr, "  close <owner/repo> <number>\n")
+		os.Exit(1)
+	}
+
+	command := os.Args[1]
+
+	switch command {
+	case "create":
+		if len(os.Args) < 4 {
+			fmt.Fprintln(os.Stderr, "usage: issues create <owner/repo> <title>")
+			os.Exit(1)
+		}
+		parts := strings.Split(os.Args[2], "/")
+		if len(parts) != 2 {
+			fmt.Fprintln(os.Stderr, "repo must be in format owner/repo")
+			os.Exit(1)
+		}
+		title := os.Args[3]
+		body, err := editInEditor()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+		if err := createIssue(parts[0], parts[1], title, body); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+
+	case "read":
+		if len(os.Args) < 4 {
+			fmt.Fprintln(os.Stderr, "usage: issues read <owner/repo> <number>")
+			os.Exit(1)
+		}
+		parts := strings.Split(os.Args[2], "/")
+		if len(parts) != 2 {
+			fmt.Fprintln(os.Stderr, "repo must be in format owner/repo")
+			os.Exit(1)
+		}
+		if err := readIssue(parts[0], parts[1], os.Args[3]); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+
+	case "update":
+		if len(os.Args) < 5 {
+			fmt.Fprintln(os.Stderr, "usage: issues update <owner/repo> <number> <title>")
+			os.Exit(1)
+		}
+		parts := strings.Split(os.Args[2], "/")
+		if len(parts) != 2 {
+			fmt.Fprintln(os.Stderr, "repo must be in format owner/repo")
+			os.Exit(1)
+		}
+		title := os.Args[4]
+		body, err := editInEditor()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+		if err := updateIssue(parts[0], parts[1], os.Args[3], title, body); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+
+	case "close":
+		if len(os.Args) < 4 {
+			fmt.Fprintln(os.Stderr, "usage: issues close <owner/repo> <number>")
+			os.Exit(1)
+		}
+		parts := strings.Split(os.Args[2], "/")
+		if len(parts) != 2 {
+			fmt.Fprintln(os.Stderr, "repo must be in format owner/repo")
+			os.Exit(1)
+		}
+		if err := closeIssue(parts[0], parts[1], os.Args[3]); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+
+	default:
+		fmt.Fprintf(os.Stderr, "unknown command: %s\n", command)
+		os.Exit(1)
+	}
+}
+```
+
+### Exercise 4.12: The popu lar web comic xkcd has a JSON interface. For example, a request to https://xkcd.com/571/info.0.json produces a detailed description of comic 571, one of many favorites. Download each URL (once!) and build an offline index. Write a tool xkcd that, using this index, prints the URL and transcript of each comic that matches a search term provided on the command line.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
+)
+
+const (
+	indexDir  = "xkcd_index"
+	maxComics = 3000
+)
+
+type Comic struct {
+	Num        int    `json:"num"`
+	Title      string `json:"title"`
+	Transcript string `json:"transcript"`
+	Alt        string `json:"alt"`
+	Img        string `json:"img"`
+}
+
+func downloadComic(num int) (*Comic, error) {
+	url := fmt.Sprintf("https://xkcd.com/%d/info.0.json", num)
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("status: %s", resp.Status)
+	}
+
+	var comic Comic
+	if err := json.NewDecoder(resp.Body).Decode(&comic); err != nil {
+		return nil, err
+	}
+
+	return &comic, nil
+}
+
+func saveComic(comic *Comic) error {
+	if err := os.MkdirAll(indexDir, 0755); err != nil {
+		return err
+	}
+
+	filename := filepath.Join(indexDir, fmt.Sprintf("%d.json", comic.Num))
+	data, err := json.MarshalIndent(comic, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(filename, data, 0644)
+}
+
+func loadComic(num int) (*Comic, error) {
+	filename := filepath.Join(indexDir, fmt.Sprintf("%d.json", num))
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	var comic Comic
+	if err := json.Unmarshal(data, &comic); err != nil {
+		return nil, err
+	}
+
+	return &comic, nil
+}
+
+func buildIndex() error {
+	fmt.Println("Building index...")
+	for i := 1; i <= maxComics; i++ {
+		filename := filepath.Join(indexDir, fmt.Sprintf("%d.json", i))
+		if _, err := os.Stat(filename); err == nil {
+			continue
+		}
+
+		comic, err := downloadComic(i)
+		if err != nil {
+			continue
+		}
+
+		if err := saveComic(comic); err != nil {
+			return err
+		}
+
+		fmt.Printf("Downloaded comic %d\n", i)
+	}
+	fmt.Println("Index built successfully")
+	return nil
+}
+
+func search(term string) error {
+	files, err := os.ReadDir(indexDir)
+	if err != nil {
+		return fmt.Errorf("index not found, run with 'build' command first")
+	}
+
+	term = strings.ToLower(term)
+	found := false
+
+	for _, file := range files {
+		if filepath.Ext(file.Name()) != ".json" {
+			continue
+		}
+
+		numStr := strings.TrimSuffix(file.Name(), ".json")
+		num, err := strconv.Atoi(numStr)
+		if err != nil {
+			continue
+		}
+
+		comic, err := loadComic(num)
+		if err != nil {
+			continue
+		}
+
+		if strings.Contains(strings.ToLower(comic.Title), term) ||
+			strings.Contains(strings.ToLower(comic.Transcript), term) ||
+			strings.Contains(strings.ToLower(comic.Alt), term) {
+			fmt.Printf("Comic #%d: %s\n", comic.Num, comic.Title)
+			fmt.Printf("URL: https://xkcd.com/%d/\n", comic.Num)
+			fmt.Printf("Transcript: %s\n\n", comic.Transcript)
+			found = true
+		}
+	}
+
+	if !found {
+		fmt.Println("No comics found matching:", term)
+	}
+
+	return nil
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Fprintf(os.Stderr, "usage: xkcd <command> [args]\n")
+		fmt.Fprintf(os.Stderr, "commands:\n")
+		fmt.Fprintf(os.Stderr, "  build          - build the index\n")
+		fmt.Fprintf(os.Stderr, "  search <term>  - search for comics\n")
+		os.Exit(1)
+	}
+
+	command := os.Args[1]
+
+	switch command {
+	case "build":
+		if err := buildIndex(); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+	case "search":
+		if len(os.Args) < 3 {
+			fmt.Fprintf(os.Stderr, "usage: xkcd search <term>\n")
+			os.Exit(1)
+		}
+		if err := search(os.Args[2]); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v\n", err)
+			os.Exit(1)
+		}
+	default:
+		fmt.Fprintf(os.Stderr, "unknown command: %s\n", command)
+		os.Exit(1)
+	}
+}
+```
+
+### Exercise 4.13: The JSON-based web service of the Open Movie Databas e lets you search https://omdbapi.com/ for a movie by name and download its poster image. Write a tool poster that downloads the poster image for the movie named on the command line.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
+)
+
+const OMDBAPI = "https://www.omdbapi.com/"
+
+type Movie struct {
+	Title  string `json:"Title"`
+	Poster string `json:"Poster"`
+}
+
+func searchMovie(title, apiKey string) (*Movie, error) {
+	params := url.Values{}
+	params.Add("t", title)
+	params.Add("apikey", apiKey)
+
+	resp, err := http.Get(OMDBAPI + "?" + params.Encode())
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("search failed: %s", resp.Status)
+	}
+
+	var movie Movie
+	if err := json.NewDecoder(resp.Body).Decode(&movie); err != nil {
+		return nil, err
+	}
+
+	if movie.Poster == "" || movie.Poster == "N/A" {
+		return nil, fmt.Errorf("no poster available for: %s", title)
+	}
+
+	return &movie, nil
+}
+
+func downloadPoster(posterURL, filename string) error {
+	resp, err := http.Get(posterURL)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("download failed: %s", resp.Status)
+	}
+
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = io.Copy(file, resp.Body)
+	return err
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Fprintf(os.Stderr, "usage: poster <movie title>\n")
+		os.Exit(1)
+	}
+
+	apiKey := os.Getenv("OMDB_API_KEY")
+	if apiKey == "" {
+		fmt.Fprintf(os.Stderr, "OMDB_API_KEY environment variable not set\n")
+		fmt.Fprintf(os.Stderr, "Get a free API key from https://www.omdbapi.com/apikey.aspx\n")
+		os.Exit(1)
+	}
+
+	title := strings.Join(os.Args[1:], " ")
+
+	movie, err := searchMovie(title, apiKey)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	filename := strings.ReplaceAll(movie.Title, " ", "_") + ".jpg"
+
+	if err := downloadPoster(movie.Poster, filename); err != nil {
+		fmt.Fprintf(os.Stderr, "error downloading poster: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Poster for '%s' saved as %s\n", movie.Title, filename)
+}
+```
+
+### Exercise 4.14: Create a web server that quer ies GitHub once and then allows navigation of the list of bug rep orts, milestones, and users.
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
+)
+
+const OMDBAPI = "https://www.omdbapi.com/"
+
+type Movie struct {
+	Title  string `json:"Title"`
+	Poster string `json:"Poster"`
+}
+
+func searchMovie(title, apiKey string) (*Movie, error) {
+	params := url.Values{}
+	params.Add("t", title)
+	params.Add("apikey", apiKey)
+
+	resp, err := http.Get(OMDBAPI + "?" + params.Encode())
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("search failed: %s", resp.Status)
+	}
+
+	var movie Movie
+	if err := json.NewDecoder(resp.Body).Decode(&movie); err != nil {
+		return nil, err
+	}
+
+	if movie.Poster == "" || movie.Poster == "N/A" {
+		return nil, fmt.Errorf("no poster available for: %s", title)
+	}
+
+	return &movie, nil
+}
+
+func downloadPoster(posterURL, filename string) error {
+	resp, err := http.Get(posterURL)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("download failed: %s", resp.Status)
+	}
+
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = io.Copy(file, resp.Body)
+	return err
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Fprintf(os.Stderr, "usage: poster <movie title>\n")
+		os.Exit(1)
+	}
+
+	apiKey := os.Getenv("OMDB_API_KEY")
+	if apiKey == "" {
+		fmt.Fprintf(os.Stderr, "OMDB_API_KEY environment variable not set\n")
+		fmt.Fprintf(os.Stderr, "Get a free API key from https://www.omdbapi.com/apikey.aspx\n")
+		os.Exit(1)
+	}
+
+	title := strings.Join(os.Args[1:], " ")
+
+	movie, err := searchMovie(title, apiKey)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	filename := strings.ReplaceAll(movie.Title, " ", "_") + ".jpg"
+
+	if err := downloadPoster(movie.Poster, filename); err != nil {
+		fmt.Fprintf(os.Stderr, "error downloading poster: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Poster for '%s' saved as %s\n", movie.Title, filename)
+}
+```
